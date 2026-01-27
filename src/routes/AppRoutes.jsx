@@ -11,9 +11,9 @@ export default function AppRoutes() {
       <Routes>
         <Route element={<MainLyout/>}>
            <Route path='/' element={<HomePage/>}></Route>
-        <Route path='/login' element={<LoginPage/>}></Route>
-        <Route path='/signup' element={<SignupPage/>}></Route>
-        </Route>
+           <Route path='/login' element={<LoginPage/>}></Route>
+           <Route path='/signup' element={<SignupPage/>}></Route>
+           </Route>
       
      </Routes>
      

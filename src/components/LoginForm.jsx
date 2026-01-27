@@ -37,7 +37,7 @@ export default function LoginForm() {
           validationSchema={loginSchema}
           onSubmit={handleSubmit}
         >
-          <Form className="w-full flex flex-col gap-[24px]">
+          <Form className="w-full px-10 lg:px-0 flex flex-col gap-[24px]">
             <div className="w-full flex flex-col gap-[8px]">
               <label className="text-[18px] font-semibold text-[#222222]">Email</label>
               <Field
@@ -89,13 +89,13 @@ export default function LoginForm() {
                 <button className="btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                   Login with Google
                 </button>
-                <FcGoogle className="absolute left-[210px] top-[16px]" />
+                <FcGoogle className="absolute left-[42px] top-[15px] lg:left-[210px] lg:top-[16px]" />
               </div>
               <div className="w-full relative">
                 <button className="btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                   Login with Facebook
                 </button>
-                <FaFacebook className="absolute left-[203px] top-[16px] text-blue-600" />
+                <FaFacebook className="absolute left-[35px] top-[15px] lg:left-[203px] lg:top-[16px] text-blue-600" />
               </div>
             </div>
           </Form>

@@ -35,7 +35,7 @@ export default function SignupForm() {
 
   return (
     <div className="w-full flex justify-center items-center h-full">
-      <div className="w-[576px] flex flex-col gap-[40px]">
+      <div className="w-full px-3 flex flex-col gap-[40px]">
         <Formik
           initialValues={{
             firstname: '',
@@ -136,13 +136,13 @@ export default function SignupForm() {
                   <button className="btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                     Sign up with Google
                   </button>
-                  <FcGoogle className="absolute left-[205px] top-[16px]" />
+                  <FcGoogle className="absolute left-[60px] top-[15px] lg:left-[205px] lg:top-[16px]" />
                 </div>
                 <div className="w-full relative">
                   <button className="btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                     Sign up with Facebook
                   </button>
-                  <FaFacebook className="absolute left-[198px] top-[16px] text-blue-600" />
+                  <FaFacebook className="absolute left-[55px] top-[15px] lg:left-[198px] lg:top-[16px] text-blue-600" />
                 </div>
               </div>
             </div>
