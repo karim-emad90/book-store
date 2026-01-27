@@ -5,7 +5,7 @@ export default function MainLyout() {
   return (
     <div>
         <LoginHeader/>
-        <main >
+        <main className="min-h-screen">
             
         <Outlet/>
 
