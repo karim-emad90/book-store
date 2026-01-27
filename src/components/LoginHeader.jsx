@@ -10,7 +10,7 @@ export default function LoginHeader() {
   return (
     <div className="w-full h-[383px] relative overflow-hidden">
 
-      {/* Header */}
+  
       <div className="relative z-20 w-full h-[92px] bg-white/20 flex items-center justify-between px-4 lg:px-[140px]">
 
         <div className="flex items-center gap-[10px] text-white">
@@ -41,7 +41,7 @@ export default function LoginHeader() {
         </button>
       </div>
 
-      {/* Mobile Menu */}
+     
       {openMenu && (
         <div className="fixed inset-0 z-30 bg-black/50 flex justify-end">
           <div className="w-[80%] h-full bg-white p-[24px] flex flex-col gap-[32px]">
@@ -82,7 +82,7 @@ export default function LoginHeader() {
         </div>
       )}
 
-      {/* Background */}
+    
       <div
         className="absolute inset-0 z-0 bg-cover bg-center"
         style={{ backgroundImage: `url(${libraryBackGround})` }}
