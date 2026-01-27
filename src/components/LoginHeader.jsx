@@ -1,10 +1,18 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import bookIcon from '../assets/LoginPage/book-bookmark 1.png';
 import libraryBackGround from '../assets/LoginPage/library-background.png';
 
 export default function LoginHeader() {
+    const navigate = useNavigate();
+    const navigateLogin = ()=>{
+     navigate('/login')
+    }
+
+    const navigateSignup = () => {
+        navigate('/signup')
+    }
   const [openMenu, setOpenMenu] = useState(false);
 
   return (
@@ -25,10 +33,15 @@ export default function LoginHeader() {
         </div>
 
         <div className="hidden lg:flex items-center gap-[10px]">
-          <button className="btn h-[40px] px-4 bg-[#D9176C] border-0 text-white">
+          <button 
+          className="btn h-[40px] px-4 bg-[#D9176C] border-0 text-white"
+          onClick={navigateLogin}
+          >
             Login
           </button>
-          <button className="btn h-[40px] px-4 bg-white text-[#D9176C] border border-[#D9176C]">
+          <button 
+          onClick={navigateSignup}
+          className="btn h-[40px] px-4 bg-white text-[#D9176C] border border-[#D9176C]">
             Signup
           </button>
         </div>

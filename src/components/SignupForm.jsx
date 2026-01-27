@@ -34,7 +34,7 @@ export default function SignupForm() {
   };
 
   return (
-    <div className="w-full flex justify-center items-center h-full">
+    <div className="w-full lg:w-[760px] lg:self-center flex  justify-center items-center h-full">
       <div className="w-full px-3 flex flex-col gap-[40px]">
         <Formik
           initialValues={{
