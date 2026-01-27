@@ -83,10 +83,17 @@ export default function LoginHeader() {
             </div>
 
             <div className="mt-auto flex flex-col gap-[12px]">
-              <button className="w-full h-[48px] bg-[#D9176C] text-white rounded-xl font-semibold">
+              <button className="w-full h-[48px] bg-[#D9176C] text-white rounded-xl font-semibold"
+                      onClick={()=>{navigateLogin(),
+                          setOpenMenu(false)}}
+                      >
                 Login
               </button>
-              <button className="w-full h-[48px] bg-white text-[#D9176C] border border-[#D9176C] rounded-xl font-semibold">
+              <button className="w-full h-[48px] bg-white text-[#D9176C] border border-[#D9176C] rounded-xl font-semibold"
+                      onClick={() => {navigateSignup(),
+                        setOpenMenu(false)
+                      }}
+                      >
                 Signup
               </button>
             </div>
