@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
-import LoginHeader from "../components/LoginHeader";
 
 export default function LoginPage() {
   return (

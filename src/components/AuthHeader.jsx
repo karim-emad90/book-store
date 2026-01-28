@@ -1,10 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { FaBars, FaTimes } from 'react-icons/fa';
 import bookIcon from '../assets/LoginPage/book-bookmark 1.png';
 import libraryBackGround from '../assets/LoginPage/library-background.png';
 
-export default function LoginHeader() {
+export default function AuthHeader() {
     const navigate = useNavigate();
     const navigateLogin = ()=>{
      navigate('/login')
@@ -21,16 +21,52 @@ export default function LoginHeader() {
   
       <div className="relative z-20 w-full h-[92px] bg-white/20 flex items-center justify-between px-4 lg:px-[140px]">
 
-        <div className="flex items-center gap-[10px] text-white">
+<div className='w-full flex  gap-[48px]'>
+          <div className="flex items-center gap-[10px] text-white">
           <img src={bookIcon} alt="bookIcon" className="w-[28px]" />
           <span className="text-[16px] font-light">Bookshop</span>
         </div>
 
-        <div className="hidden lg:flex gap-[40px] text-white text-[18px] font-semibold">
-          <Link >Home</Link>
-          <Link >Books</Link>
-          <Link >About us</Link>
+        <div className="hidden lg:flex gap-[40px] text-white text-[18px] no-underline font-semibold">
+          <NavLink
+  to="/"
+  className={({ isActive }) =>
+    `
+     ${isActive
+       ? "text-[#EAA451] hover:text-blue-500"
+       : "text-white text-[18px] font-semibold  "}`
+  }
+>
+  Home
+</NavLink>
+<NavLink
+  to="/books"
+  className={({ isActive }) =>
+    `
+     ${isActive
+       ? "text-[#EAA451] hover:text-blue-500"
+       : "text-white text-[18px] font-semibold"}`
+  }
+>
+  Books
+</NavLink>
+
+<NavLink
+  to="/about"
+  className={({ isActive }) =>
+    `
+     ${isActive
+       ? "text-[#EAA451] hover:text-blue-500"
+       : "text-white text-[18px] font-semibold"}`
+  }
+>
+  About US
+</NavLink>
+     
+
         </div>
+
+    </div>
 
         <div className="hidden lg:flex items-center gap-[10px]">
           <button 
@@ -71,26 +107,39 @@ export default function LoginHeader() {
             </div>
 
             <div className="flex flex-col gap-[20px] text-[18px] font-medium">
-              <Link onClick={() => setOpenMenu(false)}
+              <button 
+                          onClick={() => {
+          setOpenMenu(false);
+          navigate('/');
+        }}
                     className='text-neutral-900'
-                    >Home</Link>
-              <Link onClick={() => setOpenMenu(false)}
+                    >Home</button>
+              <button 
+      onClick={() => {
+          setOpenMenu(false);
+          navigate('/books');
+        }}
                     className='text-neutral-900'
-                    >Books</Link>
-              <Link onClick={() => setOpenMenu(false)}
+                    >Books</button>
+              <button 
                     className='text-neutral-900'
-                    >About us</Link>
+                          onClick={() => {
+          
+          navigate('/about');
+          setOpenMenu(false);
+        }}
+                    >About us</button>
             </div>
 
             <div className="mt-auto flex flex-col gap-[12px]">
               <button className="w-full h-[48px] bg-[#D9176C] text-white rounded-xl font-semibold"
-                      onClick={()=>{navigateLogin(),
+                      onClick={()=>{navigateLogin();
                           setOpenMenu(false)}}
                       >
                 Login
               </button>
               <button className="w-full h-[48px] bg-white text-[#D9176C] border border-[#D9176C] rounded-xl font-semibold"
-                      onClick={() => {navigateSignup(),
+                      onClick={() => {navigateSignup();
                         setOpenMenu(false)
                       }}
                       >
