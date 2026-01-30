@@ -3,7 +3,14 @@ import creditCard from '../assets/ShopAdvantages/credit-card-buyer 1.svg'
 import headset from '../assets/ShopAdvantages/user-headset 1.svg'
 import restock from '../assets/ShopAdvantages/restock 1.svg'
 import designBook from '../assets/SliderBooks/designbook.png'
+import richDadBook from '../assets/LoginPage/richdadbook.png'
 import { useEffect, useRef, useState } from 'react'
+import axios from 'axios'
+import RatingStars from '../store/RatingStars'
+import { IoCartOutline } from "react-icons/io5";
+import { FaRegHeart } from "react-icons/fa";
+
+
 
 const books = Array(10).fill(designBook);
 export default function BeforeLogin() {
@@ -25,6 +32,8 @@ const totalBooks = books.length;
 
 const [index, setIndex] = useState(0);
 const trackRef = useRef(null);
+
+const [data,setData] = useState([]);
 
 useEffect(() => {
   const interval = setInterval(() => {
@@ -49,6 +58,24 @@ useEffect(() => {
     track.style.transition = "transform 0.5s ease-in-out";
   }
 }, [index, totalBooks]);
+
+
+
+ useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(
+          "https://bookstore.eraasoft.pro/api/home"
+        );
+        console.log(res.data.data.recommended);
+        setData(res.data.data.recommended);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    fetchData();
+  }, []);
 
 
   return (
@@ -103,6 +130,83 @@ useEffect(() => {
   
 </div>
 
+      </div>
+
+      <div className='w-full px-[60px] h-dvh flex flex-col gap-[40px]'>
+        <div className='w-full'>
+          <h2 className='text-[26px] text-[#222222] font-bold'>
+          Recomended For You
+        </h2>
+
+        </div>
+        
+
+        <div className='w-full h-[344px] flex gap-[24px]'>
+          {
+            data.map((book,index)=> {
+              return(
+                            <div key={index} className='w-[648px] h-full p-[40px] flex gap-[39px] justify-center items-center'>
+              <div className='w-[176px] h-full bg-cover bg-no-repeat bg-center '
+                   style={{ backgroundImage: `url(${richDadBook})` }}
+              >
+              </div>
+
+              <div className='w-[353px] h-full flex flex-col gap-[24px]'>
+                <div className='w-full h-[132px] flex flex-col gap-[8px]'>
+                  <div className='w-full flex flex-col gap-[4px]'>
+                    <h3 className='text-[18px] text-[#222222] font-bold'>{book.bookName}</h3>
+                    <h4 className='text-[14px] font-semibold text-[#222222]'><span className='text-[14px] font-normal text-[#22222280]'>Author: </span>{book.author}</h4>
+
+                  </div>
+
+                  <p className='w-full text-[14px] text-[#222222] font-normal'>
+                         {book.description}
+                         </p>
+                </div>
+
+                <div className='w-full flex flex-col gap-[16px]'>
+                  <div className='w-full flex justify-between'>
+                    <div className='w-full h-[43px] flex flex-col gap-[8px]'>
+                      <div className='w-full flex gap-[8px]'>
+                        <div className='w-[96px]'>
+                          <RatingStars/>
+                        </div>
+                        <p className='text-[12px] font-semibold text-[#222222]'>(180 Review)</p>
+                      </div>
+
+                      <div className='flex gap-[2px]'>
+                        <p className='text-[14px] text-[#222222] font-semibold'><span className='text[14px] text-[#222222] font-light'>Rate:</span>4.2</p>
+                      </div>
+                    </div>
+
+                    <div className='h-full '>
+                      <p className='text-[26px] font-semibold text-[#222222]'>${book.price}</p>
+                    </div>
+                  </div>
+
+                  <div className='w-full flex gap-[16px]'>
+                    <button className='btn w-[289px] h-[48px] bg-[#D9176C] rounded-lg text-[16px] text-[#FFFFFF] font-semibold'>
+                      Add To Cart
+                      <IoCartOutline />
+
+                    </button>
+
+                    <button className='btn w-[48px] h-[48px] bg-[#FFFFFF] border border-[#D9176C] text-[#D9176C]'>
+                      <FaRegHeart />
+
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+              )
+            })
+          }
+
+        </div>
+        
       </div>
 
 
