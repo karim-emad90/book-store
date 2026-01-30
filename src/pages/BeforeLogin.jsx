@@ -9,6 +9,10 @@ import axios from 'axios'
 import RatingStars from '../store/RatingStars'
 import { IoCartOutline } from "react-icons/io5";
 import { FaRegHeart } from "react-icons/fa";
+import { MdKeyboardArrowLeft } from "react-icons/md";
+import leftArrow from '../assets/LoginPage/arrows/Arrow - Left.png';
+import rightArrow from '../assets/LoginPage/arrows/Arrow - right.png';
+
 
 
 
@@ -207,6 +211,139 @@ useEffect(() => {
 
         </div>
         
+      </div>
+
+      <div className="relative w-full flex flex-col  py-[120px] pl-[60px] pr-[120px] gap-[51px]">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2
+                  h-[2px] w-[1440px] bg-gray-300 rounded-full">
+          </div>
+        <div className='w-full flex items-center justify-center gap-[599px]'>
+          <div className='w-[516px] flex flex-col h-[95px] gap-[16px]'>
+            <h2 className='text-[26px] font-bold text-[#222222]'>Flash Sale</h2>
+            <p className='w-full text-[16px] font-light text-[#22222280]'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et ultricies est. Aliquam in justo varius, sagittis neque ut, malesuada leo.</p>
+          </div>
+
+<div className="relative w-[145px] h-[145px] flex items-center justify-center">
+  {/* Outer circle with different weight & opacity */}
+  <div
+    className="absolute inset-0 rounded-full"
+    style={{
+      background: `
+        conic-gradient(
+          from 180deg,
+          rgba(236,72,153,0.35) 0deg,
+          rgba(236,72,153,0.35) 160deg,
+          rgba(236,72,153,1) 160deg,
+          rgba(236,72,153,1) 360deg
+        )
+      `,
+      padding: "3px",
+    }}
+  >
+    {/* Inner white circle */}
+    <div className="w-full h-full bg-white rounded-full" />
+  </div>
+
+  {/* Time text */}
+  <span className="relative z-10 text-[18px] font-bold text-[#111]">
+    30:00:00
+  </span>
+
+  {/* Bottom dot */}
+  <div className="absolute bottom-[-4px] w-[12px] h-[12px] bg-[#ec4899] rounded-full shadow-sm" />
+</div>
+
+
+
+
+
+        </div>
+
+        <div className='w-[1016px] self-center justify-items-center flex'>
+          <div className='w-full flex gap-[16px] items-center'>
+            <button className='btn w-[44px] bg-[#F5F5F5] text-center border-0 rounded-full shadow-[0_6px_0_0_rgba(0,0,0,0.25)] '>
+              <img src={leftArrow} alt="leftArrow" />
+
+            </button>
+         <div className='w-[888px] h-full flex gap-[40px]'>
+          {data.map((book, index) => {
+            return (
+               <div className='w-[424px] h-[294px] flex gap-[24px] p-[16px] bg-[#3B2F4A] rounded-lg'>
+              <div className='w-[176px] h-full'
+                   style={{ backgroundImage: `url(${richDadBook})` }}
+                   
+              ></div>
+
+              <div className='w-[192px] flex flex-col gap-[17px]'>
+                <div className='w-full h-[94px] flex flex-col gap-[16px]'>
+                  <div className='w-full flex flex-col gap-[4px]'>
+                    <h3 className='text-[16px] max-w-[182px] truncate  text-[#FFFFFF] font-bold'>{book.bookName}</h3>
+                    <div className='w-full flex'>
+                      <p className='text-[12px] text-[#FFFFFF] font-semibold'><span className='text-[12px] text-[#ffffff80] font-light'>Author:</span>{book.author}</p>
+                    </div>
+                  </div>
+
+                  <div className='w-full flex flex-col gap-[4px]'>
+                      <div className='w-full items-center flex gap-[8px]'>
+                        <div className='w-[96px]'>
+                          <RatingStars/>
+                        </div>
+                        <p className='text-[12px] font-semibold text-[#ffffff80]'>({book.countReview} Review)</p>
+                      </div>
+
+                        <div className='flex gap-[2px]'>
+                        <p className='text-[14px] text-[#FFFFFF] font-semibold'><span className='text[14px] text-[#ffffff80] font-light'>Rate:</span>4.2</p>
+                      </div>
+                    
+                  </div>
+                </div>
+
+                <div className='w-full flex flex-col gap-[24px]'>
+                  <div className='w-full flex-col gap-[16px]'>
+                    <div className='w-full h-[46px] flex items-center  gap-[5.5px]'>
+                      <p className='text-[14px] font-semibold text-[#ffffff4d]'>${book.price}</p>
+                      <p className='text-[22px] justify-self-start font-semibold text-[#FFFFFF]'>${book.final_price}</p>
+                    </div>
+
+                    <div className="w-full flex h-[33px] flex-col gap-[8px] max-w-[650px]">
+  {/* Progress bar background */}
+  <div className="w-full h-[9px] bg-[#4a4158] rounded-full overflow-hidden">
+    {/* Progress fill */}
+    <div className="h-full w-[75%] bg-[#f2b35e] rounded-full"></div>
+  </div>
+
+  {/* Text */}
+  <p className=" text-[12px] text-[#ffffff80] font-light">
+    {book.stock} books left
+  </p>
+</div>
+
+                  </div>
+
+                  <button className='btn w-[52px] border-0 h-[48px] self-end  bg-[#D9176C]'>
+                    <IoCartOutline />
+                  </button>
+                </div>
+              </div>
+               </div>
+
+            )
+          })}
+
+
+
+           <button className='btn w-[44px] self-center bg-[#F5F5F5] text-center border-0 rounded-full shadow-[0_6px_0_0_rgba(0,0,0,0.25)] '>
+              <img src={rightArrow} alt="rightArrow" />
+
+            </button>
+
+         </div>
+
+
+          </div>
+
+        
+        </div>
       </div>
 
 
