@@ -26,6 +26,7 @@ export default function SignupForm() {
         password: values.password,
         password_confirmation: values.passwordconfirmation
       };
+      console.log(signupData);
       const res = await axios.post('https://bookstore.eraasoft.pro/api/register', signupData);
       console.log(res);
     } catch (err) {
@@ -35,7 +36,7 @@ export default function SignupForm() {
 
   return (
     <div className="w-full lg:w-[760px] lg:self-center flex  justify-center items-center h-full">
-      <div className="w-full px-3 flex flex-col gap-[40px]">
+      <div className="w-full p-0 lg:px-3 flex flex-col gap-[40px]">
         <Formik
           initialValues={{
             firstname: '',
@@ -49,7 +50,7 @@ export default function SignupForm() {
           onSubmit={handleSigup}
         >
           <Form className="w-full flex flex-col gap-[24px]">
-            <div className="w-full flex justify-between">
+            <div className=" hidden w-full lg:flex justify-between">
               <div className="w-[280px] flex flex-col gap-[8px]">
                 <label className="text-[#222222] text-[18px] font-semibold">First Name</label>
                 <Field
@@ -57,7 +58,7 @@ export default function SignupForm() {
                   placeholder="John"
                   name="firstname"
                 />
-                <ErrorMessage name="firstname" component="p" className="text-red-500 text-center" />
+                <ErrorMessage name="firstname" component="p" className="text-red-700 px-2 py-2 " />
               </div>
 
               <div className="w-[280px] flex flex-col gap-[8px]">
@@ -67,45 +68,75 @@ export default function SignupForm() {
                   placeholder="Smith"
                   name="lastname"
                 />
-                <ErrorMessage name="lastname" component="p" className="text-red-500 text-center" />
+                <ErrorMessage name="lastname" component="p" className="text-red-700 px-2 py-2" />
               </div>
             </div>
 
-            <div className="w-full flex flex-col gap-[8px]">
-              <label className="text-[18px] font-semibold text-[#222222]">Email</label>
+                        <div className="lg:hidden w-full flex flex-col gap-[3px]">
+              <label className="text-[16px] lg:text-[18px] font-semibold text-[#222222]">Name</label>
+              <div className="w-full flex gap-0">
+                                            <Field
+                className=" w-[50%] text-[16px]
+text-[#222222] outline-0 h-[54px] border-1 border-[#22222240] border-r-0 text-neutral-900 bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal"
+                placeholder="John"
+                name="firstname"
+              />
+              
+
               <Field
-                className="input w-full h-[54px] text-neutral-900 bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal"
+                className=" w-[50%] text-[16px] border-1 border-[#22222240] outline-0 h-[54px] border-l-0 text-[#222222] bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal"
+                placeholder="Smith"
+                name="lastname"
+              />
+
+              </div>
+              <ErrorMessage name="firstname" component="p" className="text-red-700 px-2 py-2" /> 
+              
+              <ErrorMessage name="lastname" component="p" className="text-red-700 px-2 py-2" />
+
+            </div>
+
+
+
+            <div className="w-full flex flex-col gap-[8px]">
+              <label className="text-[16px] lg:text-[18px] font-semibold text-[#222222]">Email</label>
+              <Field
+                className="input text-[16px]
+text-[#222222] w-full h-[54px] border-1 border-[#22222240] bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal"
                 placeholder="example@gmail.com"
                 name="email"
               />
-              <ErrorMessage name="email" component="p" className="text-red-500 text-center" />
+              <ErrorMessage name="email" component="p" className="text-red-700 px-2 py-2" />
             </div>
 
             <div className="w-full flex flex-col gap-[14px]">
-              <label className="text-[18px] font-semibold text-[#222222]">Password</label>
+              <label className="text-[16px] lg:text-[18px] font-semibold text-[#222222]">Password</label>
               <div className="relative w-full">
                 <Field
-                  className="z-0 input w-full text-neutral-900 h-[54px] bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal"
-                  placeholder="Enter password"
+                  className="z-0 input w-full text-[16px]
+text-[#222222] h-[54px] bg-[#FFFFFF] border-1 border-[#22222240] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal"
+                  placeholder="**********"
                   name="password"
                 />
-                <ErrorMessage name="password" component="p" className="text-red-500 text-center" />
-                <FaEye className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" />
+                <ErrorMessage name="password" component="p" className="text-red-700 px-2 py-2" />
+                <FaEye className="absolute right-4 top-7 lg:top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" />
               </div>
 
-              <label className="text-[18px] font-semibold text-[#222222]">Confirm password</label>
+              <label className="text-[16px] lg:text-[18px] font-semibold text-[#222222]">Confirm password</label>
               <div className="relative w-full">
                 <Field
-                  className="z-0 input w-full text-neutral-900 h-[54px] bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal mb-[10px]"
-                  placeholder="Enter password"
+                  className="z-0 input text-[16px]
+text-[#222222] w-full border-1 border-[#22222240]  h-[54px] bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal mb-[10px]"
+                  placeholder="**********"
                   name="passwordconfirmation"
                 />
-                <ErrorMessage name="passwordconfirmation" component="p" className="text-red-500 text-center" />
-                <FaEye className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" />
+                <ErrorMessage name="passwordconfirmation" component="p" className="text-red-700 px-2 py-2" />
+                <FaEye className="absolute right-4 top-7 lg:top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" />
               </div>
 
               <div className="w-full flex justify-between items-center">
-                <section className="w-full text-neutral-900 flex items-center gap-[8px]">
+                <section className="w-full text-[16px]
+text-[#222222] flex items-center gap-[8px]">
                   <Field
                     type="checkbox"
                     id="remember"

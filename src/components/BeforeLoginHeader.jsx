@@ -24,7 +24,7 @@ export default function AuthHeader() {
 
   return (
   
-         <div className="hidden  lg:block w-full lg:h-[338px] relative overflow-hidden">
+         <div className="hidden lg:block w-full lg:h-[338px] relative overflow-hidden">
 
   
       <div className="relative z-20 w-full h-[92px] bg-white/20 flex items-center justify-between px-4 lg:px-[140px]">
