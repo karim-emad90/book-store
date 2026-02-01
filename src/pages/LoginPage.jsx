@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
 import LoginForm from "../components/LoginForm";
+import AuthHeader from "../components/AuthHeader";
 
 export default function LoginPage() {
   return (
@@ -8,5 +9,7 @@ export default function LoginPage() {
         <LoginForm/>
       
     </div>
+  
+
   )
 }
