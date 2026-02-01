@@ -30,14 +30,14 @@ export default function LoginForm() {
 
   return (
     <div className="w-full flex justify-center items-center h-dvh">
-      <div className="w-full lg:px-0 lg:h-[636px] lg:w-[576px] flex flex-col gap-[40px]">
+      <div className="w-full px-0 lg:h-[636px] lg:w-[576px] flex flex-col gap-[40px]">
         <h2 className="hidden lg:block text-[#D9176C] font-semibold text-[16px] self-center">Welcome Back!</h2>
         <Formik
           initialValues={{ email: '', password: '', remember: false }}
           validationSchema={loginSchema}
           onSubmit={handleSubmit}
         >
-          <Form className="w-[343px] lg:w-full px-0 flex flex-col lg:gap-[24px]">
+          <Form className="w-full  px-0 flex flex-col lg:gap-[24px]">
             <div className="w-full flex flex-col gap-[8px]">
               <label className="text-[16px] lg:text-[18px] font-semibold text-[#222222]">Email</label>
               <Field
