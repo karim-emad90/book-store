@@ -26,14 +26,14 @@ export default function AppRoutes() {
     <div>
       <Routes>
         
-        <Route element={<MainLyout/>}>
+        <Route element={<LoginLayout/>}>
            <Route path='/login' element={<LoginPage/>}></Route>
            <Route path='/signup' element={<SignupPage/>}></Route>
            <Route path='/forget' element={<ForgetPassword/>}></Route>
            <Route path='/code' element={<AddCode/>}></Route>
            <Route path='/reset' element={<ResetPassword/>}></Route>
            </Route>
-        <Route element={<LoginLayout/>}>
+        <Route element={<MainLyout/>}>
            <Route path='/' element={<BeforeLogin/>}></Route>
            <Route path='/beforelogin' element={<BeforeLogin/>}></Route>
 

@@ -35,7 +35,7 @@ export default function SignupForm({btnName,lineThrough}) {
   };
 
   return (
-    <div className="w-full lg:w-[760px] lg:self-center flex  justify-center items-center h-full">
+    <div className="w-full lg:w-[760px] px-1 lg:px-0 lg:self-center flex  justify-center items-center h-full">
       <div className="w-full p-0 lg:px-3 flex flex-col gap-[40px]">
         <Formik
           initialValues={{

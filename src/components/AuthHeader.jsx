@@ -6,7 +6,7 @@ import battery from '../assets/MainAuthHeader/Battery.png';
 
 export default function AuthHeader({title}) {
   return (
-<div className="lg:hidden w-full h-full flex flex-col  gap-[16px] ">
+<div className="lg:hidden w-full h-full flex flex-col  gap-[16px] px-1 ">
       <div className='w-full gap-[235px]   pt-[14px] pb-[10px] items-center flex '>
        <p className='w-[27px] text-[15px] font-[500] text-black'>9:41</p>
         <div className='w-full flex gap-[5px]'>

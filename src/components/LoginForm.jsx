@@ -29,7 +29,7 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="w-full flex justify-center items-center h-dvh">
+    <div className="w-full flex justify-center items-center h-dvh px-1 lg:px-0">
       <div className="w-full px-0 h-full lg:h-[636px] lg:w-[576px] flex flex-col gap-[40px]">
         <h2 className="hidden lg:block text-[#D9176C] font-semibold text-[16px] self-center">Welcome Back!</h2>
         <Formik
