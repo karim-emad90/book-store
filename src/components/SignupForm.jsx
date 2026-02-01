@@ -4,7 +4,7 @@ import { FaEye, FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import * as Yup from 'yup';
 
-export default function SignupForm() {
+export default function SignupForm({btnName,lineThrough}) {
   const signupSchema = Yup.object({
     firstname: Yup.string().required('First name is required!').min(2).max(20),
     lastname: Yup.string().required('Last name is required!').min(2).max(20),
@@ -152,17 +152,24 @@ text-[#222222] flex items-center gap-[8px]">
 
               <button
                 type="submit"
-                className="btn w-full h-[48px] bg-[#D9176C] text-[#FFFFFF] font-semibold rounded-xl border-0 mt-[40px]"
+                className="hidden lg:block btn w-full h-[48px] bg-[#D9176C] text-[#FFFFFF] font-semibold rounded-xl border-0 mt-[40px]"
               >
                 Sign Up
               </button>
 
-              <div className="w-full text-[#222222] text-[16px] font-normal flex justify-center mt-[40px]">
+                            <button
+                type="submit"
+                className=" lg:hidden btn w-full h-[48px] bg-[#D9176C] text-[#FFFFFF] font-semibold rounded-xl border-0 mt-[40px]"
+              >
+                {btnName}
+              </button>
+
+              <div className="hidden w-full text-[#222222] text-[16px] font-normal lg:flex justify-center mt-[40px]">
                 <p>Already have an account?<a href="#" className="text-[#D9176C] text-[16px] font-semibold">Login</a></p>
               </div>
 
-              <div className="w-full h-[148px] gap-[12px] flex flex-col items-center mt-[40px]">
-                <h5 className="self-center">or</h5>
+              <div className="hidden w-full h-[148px] gap-[12px] lg:flex flex-col items-center mt-[40px]">
+                <h5 className="self-center text-[#00000080]">or</h5>
                 <div className="w-full relative">
                   <button className="btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                     Sign up with Google
@@ -176,6 +183,49 @@ text-[#222222] flex items-center gap-[8px]">
                   <FaFacebook className="absolute left-[55px] top-[15px] lg:left-[198px] lg:top-[16px] text-blue-600" />
                 </div>
               </div>
+
+                          <div className="lg:hidden w-full h-[148px] gap-[12px] flex flex-col items-center mt-[40px]">
+ 
+
+                    <div className="w-full order-1 grid grid-cols-[1fr_auto_1fr] items-center gap-4">
+      <div className="h-px bg-gray-300"></div>
+
+                  <span className="lg:hidden text-gray-500 text-sm whitespace-nowrap">
+        {`Or ${lineThrough} with`}
+      </span>
+
+        
+
+      <div className="h-px bg-gray-300"></div>
+    </div>
+                  <div className=" w-full text-[#222222] text-[16px] font-normal lg:flex justify-items-center ">
+                <p>Already have an account?<a href="#" className="text-[#D9176C] text-[16px] font-semibold">Login</a></p>
+              </div>
+              <div className="w-full order-3 lg:order-2 flex lg:flex-col gap-[16px] ">
+                              <div className="w-[163.5px] lg:w-full  relative">
+                <button className="hidden lg:block btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
+                  Login with Google
+                </button>
+
+                <button className="lg:hidden btn w-full w-[163.5px] h-[54px] h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
+                  Google
+                </button>
+                <FcGoogle className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[30px] top-[15px] lg:left-[208px] lg:top-[12px]" />
+              </div>
+              <div className="w-[163.5px] lg:w-full relative">
+                <button className="hidden lg:block btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
+                  Login with Facebook
+                </button>
+
+                <button className=" lg:hidden w-[163.5px] h-[54px] btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
+                  Facebook
+                </button>
+                <FaFacebook className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[21px] top-[15px] lg:left-[200px] lg:top-[12px] text-blue-600" />
+              </div>
+
+              </div>
+
+            </div>
             </div>
           </Form>
         </Formik>
