@@ -1,10 +1,9 @@
 import { Outlet } from "react-router-dom";
 import BeforeLoginHeader from "../components/BeforeLoginHeader";
 import MainFooter from "../components/MainFooter";
-import AuthHeader from "../components/AuthHeader";
 
 export default function LoginLayout() {
-  const hideFooter = true;
+  
   return (
      <div className="flex flex-col bg-[#F5F5F5] gap-20 lg:gap-20">
         <BeforeLoginHeader></BeforeLoginHeader>
@@ -13,7 +12,7 @@ export default function LoginLayout() {
         <Outlet/>
 
         </main>
-        <MainFooter hideFooter={hideFooter}></MainFooter>
+        <MainFooter/>
     </div>
   )
 }
