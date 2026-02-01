@@ -12,10 +12,13 @@ import { MdKeyboardArrowRight } from "react-icons/md";
 
 
 
-export default function MainFooter() {
+export default function MainFooter({hideFooter}) {
+  
   return (
-    
-      <div className='hidden lg:block w-full h-[370px] px-[60px] bg-[#3B2F4A] lg:flex flex-col gap-[16px] justify-center'>
+    <>
+     {
+      hideFooter ? (
+              <div className='lg:flex w-full h-[370px] px-[60px] bg-[#3B2F4A]  lg:flex-col gap-[16px] justify-center'>
        <div className="w-full flex gap-[794px] pb-[16px] border-0 border-b-1 border-b-[#ffffff33] ">
         <div className="flex w-[358px] gap-[40px] items-center">
           <div className="w-[104px] items-center flex gap-[5.5px]">
@@ -90,7 +93,12 @@ export default function MainFooter() {
        </div>
         
       </div>
+      ):null
+    }
+
       
+    </>
+   
     
   )
 }
