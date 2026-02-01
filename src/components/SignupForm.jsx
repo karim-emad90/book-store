@@ -174,13 +174,13 @@ text-[#222222] flex items-center gap-[8px]">
                   <button className="btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                     Sign up with Google
                   </button>
-                  <FcGoogle className="absolute left-[60px] top-[15px] lg:left-[205px] lg:top-[16px]" />
+                  <FcGoogle className="absolute left-[60px] top-[15px] lg:left-[280px] lg:top-[16px]" />
                 </div>
                 <div className="w-full relative">
                   <button className="btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                     Sign up with Facebook
                   </button>
-                  <FaFacebook className="absolute left-[55px] top-[15px] lg:left-[198px] lg:top-[16px] text-blue-600" />
+                  <FaFacebook className="absolute left-[55px] top-[15px] lg:left-[275px] lg:top-[16px] text-blue-600" />
                 </div>
               </div>
 
@@ -201,8 +201,8 @@ text-[#222222] flex items-center gap-[8px]">
                   <div className=" w-full text-[#222222] text-[16px] font-normal lg:flex justify-items-center ">
                 <p>Already have an account?<a href="#" className="text-[#D9176C] text-[16px] font-semibold">Login</a></p>
               </div>
-              <div className="w-full order-3 lg:order-2 flex lg:flex-col gap-[16px] ">
-                              <div className="w-[163.5px] lg:w-full  relative">
+              <div className="w-full order-3 lg:order-2 flex justify-items-center lg:flex-col gap-[16px] ">
+                              <div className="w-[163.5px] lg:w-full   relative">
                 <button className="hidden lg:block btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                   Login with Google
                 </button>
@@ -210,7 +210,7 @@ text-[#222222] flex items-center gap-[8px]">
                 <button className="lg:hidden btn w-full w-[163.5px] h-[54px] h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
                   Google
                 </button>
-                <FcGoogle className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[30px] top-[15px] lg:left-[208px] lg:top-[12px]" />
+                <FcGoogle className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[25px] top-[15px] lg:left-[208px] lg:top-[12px]" />
               </div>
               <div className="w-[163.5px] lg:w-full relative">
                 <button className="hidden lg:block btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
@@ -220,7 +220,7 @@ text-[#222222] flex items-center gap-[8px]">
                 <button className=" lg:hidden w-[163.5px] h-[54px] btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
                   Facebook
                 </button>
-                <FaFacebook className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[21px] top-[15px] lg:left-[200px] lg:top-[12px] text-blue-600" />
+                <FaFacebook className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[16px] top-[15px] lg:left-[200px] lg:top-[12px] text-blue-600" />
               </div>
 
               </div>
