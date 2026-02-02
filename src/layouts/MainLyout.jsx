@@ -5,6 +5,7 @@ import BeforeLoginHeader from '../components/BeforeLoginHeader';
 import AuthFooter from "../components/AuthFooter";
 import LoginHeader from "../components/loginHeader";
 import MainHeader from "../components/MainHeader";
+import MobileFooter from "../components/MobileFooter";
 
 export default function MainLyout() {
   return (
@@ -18,6 +19,7 @@ export default function MainLyout() {
 
         </main>
         <MainFooter></MainFooter>
+        <MobileFooter/>
     </div>
   )
 }
