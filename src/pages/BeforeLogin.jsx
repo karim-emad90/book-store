@@ -83,8 +83,8 @@ useEffect(() => {
 
 
   return (
-    <div className="h-full w-full lg:max-w-full mx-auto  bg-[#F5F5F5] flex flex-col gap-[120px]   ">
-      <div className="w-full flex justify-center gap-[61px] items-center">
+    <div className="h-full w-full lg:max-w-full mx-auto  bg-[#F5F5F5] flex flex-col    ">
+      <div className="w-full h-full flex justify-center gap-[61px] items-center ">
         {
           ShopAdvantages.map((el,index) => {
         return (<div key={index} className="w-[275px] flex flex-col gap-4">

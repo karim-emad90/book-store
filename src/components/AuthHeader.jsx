@@ -4,7 +4,7 @@ import cellular from '../assets/MainAuthHeader/Cellular Connection.png';
 import wifi from '../assets/MainAuthHeader/Wifi.png';
 import battery from '../assets/MainAuthHeader/Battery.png';
 
-export default function AuthHeader({title}) {
+export default function AuthHeader({title,hidden}) {
   return (
 <div className="lg:hidden w-full h-full flex flex-col  gap-[16px] px-1 ">
       <div className='w-full gap-[235px]   pt-[14px] pb-[10px] items-center flex '>
@@ -16,10 +16,11 @@ export default function AuthHeader({title}) {
         </div>
       </div>
 
-      <div className='w-full items-center px-[16px] flex gap-[8px]'>
+      <div className={`${hidden} w-full items-center px-[16px] flex gap-[8px]`}>
       <MdOutlineKeyboardArrowLeft className='text-[#000000] h-[22px] w-[22px]' />
        <h3 className='text-[16px] text-[#000000]'>{title}</h3>
       </div>
+    
 
 
     </div>

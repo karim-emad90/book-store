@@ -1,13 +1,43 @@
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import bookIcon from '../assets/LoginPage/book-bookmark 1.png';
+import BigLibrary from '../assets/HomPage/big-library.png';
+import { FaMicrophone } from "react-icons/fa";
+import { CiSearch } from "react-icons/ci";
+import AuthHeader from './AuthHeader';
+import { IoCartOutline } from "react-icons/io5";
+import { CiHeart } from "react-icons/ci";
 
-import { NavLink } from 'react-router-dom'
-import bookIcon from '../assets/LoginPage/book-bookmark 1.png'
+
+
+
+
+
+
+
+
 
 export default function MainHeader() {
-  return (
+    const navigate = useNavigate();
+    const navigateLogin = ()=>{
+     navigate('/login')
+    }
 
-<div className="relative z-20 w-full h-[92px] bg-white/20 flex items-center justify-between px-4 lg:px-[140px]">
-    <div className='w-full flex  gap-[48px]'>
-          <div className="flex items-center gap-[10px] text-white">
+    const navigateSignup = () => {
+        navigate('/signup')
+    }
+  const [openMenu, setOpenMenu] = useState(false);
+
+  return (
+  
+    <>
+            <div className=" hidden lg:block w-full lg:h-[804px] relative overflow-hidden">
+
+  
+      <div className="relative z-20 w-full h-[92px] bg-white/20 flex items-center justify-between px-4 lg:px-[140px]">
+
+<div className='w-full flex  gap-[48px]'>
+          <div className="hidden lg:flex items-center gap-[10px] text-white">
           <img src={bookIcon} alt="bookIcon" className="w-[28px]" />
           <span className="text-[16px] font-light">Bookshop</span>
         </div>
@@ -52,10 +82,104 @@ export default function MainHeader() {
         </div>
 
     </div>
-    </div>
+
+        <div className=" flex items-center gap-[10px]">
+          <button 
+          className="btn h-[40px] px-4 bg-[#D9176C] border-0 text-white"
+          onClick={navigateLogin}
+          >
+            Login
+          </button>
+          <button 
+          onClick={navigateSignup}
+          className="btn h-[40px] px-4 bg-white text-[#D9176C] border border-[#D9176C]">
+            Signup
+          </button>
+        </div>
+
+
+      </div>
+
+     
+
+
+      
 
     
+      <div
+        className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center"
+        style={{ backgroundImage: `url(${BigLibrary})` }}
+      >
+        <div className='relative flex justify-self-center top-[50%]  w-[536px] z-22 h-[59px]'>
+  <div className="relative w-full">
+    <input
+      type="text"
+      className="h-full text-black text-xl w-full bg-white rounded-l-4xl rounded-r-0
+      placeholder:text-[#22222280] placeholder:text-[20px]
+      px-7 pr-14"
+      placeholder="Search"
+    />
 
-  )
+    {/* mic icon */}
+    <FaMicrophone
+      className="absolute right-4 top-1/2 -translate-y-1/2
+      text-gray-500 cursor-pointer text-2xl"
+    />
+  </div>
+
+  <button
+    className="h-full w-[70px] bg-[#D9176C]
+    rounded-r-4xl rounded-l-0
+    flex items-center justify-center
+    
+    "
+  >
+    <CiSearch className="text-white text-2xl font-semibold" />
+  </button>
+      </div>
+      </div>
+    </div>
+
+    <div className='w-full  h-full flex flex-col gap-[24px]'>
+    <AuthHeader hidden={'hidden'}/>
+    <div className='w-full flex gap-[16px] justify-center px-4 '>
+      <div className='w-[239px] flex h-[38px]'>
+        <div className='w-[192.99px] relative'>
+           <input type="text" className='outline-0 pl-[16px] w-full h-full border-r-0 rounded-r-0 rounded-l-xl border-[#22222233] bg-[#FFFFFF] text-[16px] text-black placeholder:text-[#22222233] placeholder:text-[12px]'
+                              placeholder='Serach'  />
+               <FaMicrophone
+      className="absolute right-2 top-1/2 -translate-y-1/2
+      text-[#00000080] cursor-pointer text-xl"
+    />
+        </div>
+        
+        <button className='flex justify-center items-center w-[46px] h-[38px] outline-0 apperance-none bg-[#FFFFFF] border-l-1  rounded-r-3xl border-[#22222233]'>
+          <CiSearch className='w-[14px] h-[14px] text-[#D9176C]' />
+
+        </button>
+      </div>
+
+          <div className='w-full flex gap-[8px]'>
+      <button className="flex justify-center items-center rounded-full w-[38px] h-[38px] bg-[#D9176C]">
+         <IoCartOutline className='w-[16px] h-[16px]' />
+
+      </button>
+      <buuton className="flex justify-center items-center rounded-full w-[38px] h-[38px] bg-[#FFFFFF] border-[#D9176C]">
+           <CiHeart className='w-[16px] h-[16px] text-[#D9176C]' />
+
+      </buuton>
+    </div>
+    </div>
+
+
+
+    </div>
+
+    </>
+ 
+
+    
+  
+
+  );
 }
-
