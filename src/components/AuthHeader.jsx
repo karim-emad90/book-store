@@ -7,9 +7,9 @@ import battery from '../assets/MainAuthHeader/Battery.png';
 export default function AuthHeader({title,hidden}) {
   return (
 <div className="lg:hidden w-full h-full flex flex-col  gap-[16px] px-1 ">
-      <div className='w-full gap-[235px]   pt-[14px] pb-[10px] items-center flex '>
+      <div className='w-full justify-between   pt-[14px] pb-[10px] items-center flex '>
        <p className='w-[27px] text-[15px] font-[500] text-black'>9:41</p>
-        <div className='w-full flex gap-[5px]'>
+        <div className=' flex gap-[5px]'>
           <img className='w-[17px] h-[10.67px]' src={cellular} alt="" />
           <img className='w-[15.33px] h-[10.67px]' src={wifi} alt="" />
           <img className='w-[24.33px] h-[10.67px]' src={battery} alt="" />

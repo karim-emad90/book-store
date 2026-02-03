@@ -94,23 +94,23 @@ export default function LoginForm() {
 
       <div className="h-px bg-gray-300"></div>
     </div>
-              <div className="w-full order-3 lg:order-2 flex lg:flex-col gap-[16px] ">
-                              <div className="w-[163.5px] lg:w-full  relative">
+              <div className="w-full order-3 lg:order-2 flex justify-between lg:flex-col gap-[16px] ">
+                              <div className="w-full lg:w-full  relative">
                 <button className="hidden lg:block btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                   Login with Google
                 </button>
 
-                <button className="lg:hidden btn w-full w-[163.5px] h-[54px] h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
+                <button className="lg:hidden btn w-[50%] w-[163.5px] h-[54px] h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
                   Google
                 </button>
                 <FcGoogle className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[30px] top-[15px] lg:left-[208px] lg:top-[12px]" />
               </div>
-              <div className="w-[163.5px] lg:w-full relative">
+              <div className="w-full lg:w-full relative">
                 <button className="hidden lg:block btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[14px] font-normal border-0 rounded-xl">
                   Login with Facebook
                 </button>
 
-                <button className=" lg:hidden w-[163.5px] h-[54px] btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
+                <button className=" lg:hidden  h-[54px] btn w-full h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
                   Facebook
                 </button>
                 <FaFacebook className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[21px] top-[15px] lg:left-[200px] lg:top-[12px] text-blue-600" />

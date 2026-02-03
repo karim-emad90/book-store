@@ -16,7 +16,7 @@ export default function ForgetPassword() {
   return (
     
     <div className='h-full w-full lg:max-w-full mx-auto  bg-[#F5F5F5] flex flex-col gap-[40px] lg:gap-[14px]'>
-          <BeforeLoginHeader></BeforeLoginHeader>
+          
           <AuthHeader title={'Forget password'}/>
           <div className=' w-full flex flex-col justify-center items-center gap-[72px] lg:gap-[16px]'>
             <p className='hidden lg:block text-[14px]  lg:text-[16px] text-[#D9176C] font-semibold'>Forget Password?</p>
