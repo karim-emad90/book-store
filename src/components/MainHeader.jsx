@@ -140,11 +140,11 @@ export default function MainHeader() {
       </div>
     </div>
 
-    <div className='w-full  h-full flex flex-col gap-[24px]'>
+    <div className='w-full  h-full flex flex-col lg:gap-[24px]'>
     <AuthHeader hidden={'hidden'}/>
     <div className='lg:hidden w-full flex gap-[16px] justify-items-center '>
       <div className='lg:w-[239px] w-full flex h-[38px]'>
-        <div className='w-[178px] relative'>
+        <div className='w-[193px] relative'>
            <input type="text" className='outline-0 pl-[16px] w-full h-full border-r-0 rounded-r-0 rounded-l-xl border-[#22222233] bg-[#FFFFFF] text-[16px] text-black placeholder:text-[#22222233] placeholder:text-[12px]'
                               placeholder='Serach'  />
                <FaMicrophone
@@ -159,12 +159,12 @@ export default function MainHeader() {
         </button>
       </div>
 
-          <div className='w-full flex gap-[8px] justify-items-center'>
-      <button className="flex justify-center items-center rounded-full w-[38px] h-[38px] bg-[#D9176C]">
+          <div className='w-[88px] flex gap-[8px] justify-items-center'>
+      <button className="flex justify-center items-center rounded-full w-[40px] h-[40px] bg-[#D9176C]">
          <IoCartOutline className='w-[16px] h-[16px]' />
 
       </button>
-      <buuton className="flex justify-center items-center rounded-full w-[38px] h-[38px] bg-[#FFFFFF] border-[#D9176C]">
+      <buuton className="flex justify-center items-center rounded-full w-[40px] h-[40px] bg-[#FFFFFF] border-[#D9176C]">
            <CiHeart className='w-[16px] h-[16px] text-[#D9176C]' />
 
       </buuton>
