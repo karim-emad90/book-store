@@ -43,7 +43,7 @@ export default function LoginForm() {
       if(err.response?.status == 422){
         Swal.fire({
   title: "Invalid Data!",
-  text: "Plese,check your account setails or sign up! ",
+  text: "Plese,check your account details or sign up! ",
   icon: "error",
   showCancelButton: true,
   confirmButtonColor: "#3085d6",
@@ -127,7 +127,7 @@ export default function LoginForm() {
                   Remember me
                 </label>
               </section>
-              <a href="#" className="text-[#D9176C]  w-full font-normal text-[14px] lg:text-[16px]" 
+              <a className="text-[#D9176C]  w-full font-normal text-[14px] lg:text-[16px]" 
                           onClick={()=> {navigate('/forget')}}>Forget password?</a>
             </div>
             <button
@@ -138,7 +138,7 @@ export default function LoginForm() {
             </button>
             <div className="w-full order-2 lg:order-3 text-[#222222] text-[16px] font-normal flex justify-center mt-0 lg:mt-[40px]">
 
-              <p>Don’t have an account?<a href="#" className="text-[#D9176C] text-[16px] font-semibold" onClick={()=>{navigate('/signup')}}>Signup</a></p>
+              <p>Don’t have an account?<a  className="text-[#D9176C] text-[16px] font-semibold" onClick={()=>{navigate('/signup')}}>Signup</a></p>
             </div>
             <div className="w-full h-[148px] gap-[12px] flex flex-col items-center mt-[40px]">
                   <div className="w-full order-1 grid grid-cols-[1fr_auto_1fr] items-center gap-4">

@@ -1,10 +1,14 @@
 import axios from "axios";
 import { Field, Formik, Form, ErrorMessage } from "formik";
+import { useEffect, useState } from "react";
 import { FaEye, FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
+import { useNavigate } from "react-router-dom";
+import Swal from 'sweetalert2';
 import * as Yup from 'yup';
 
 export default function SignupForm({btnName,lineThrough}) {
+  const navigate = useNavigate();
   const signupSchema = Yup.object({
     firstname: Yup.string().required('First name is required!').min(2).max(20),
     lastname: Yup.string().required('Last name is required!').min(2).max(20),
@@ -14,10 +18,11 @@ export default function SignupForm({btnName,lineThrough}) {
       .required('Confirm password is required!')
       .min(5)
       .max(20)
-      .oneOf([Yup.ref('password')], 'Passwords must match')
+      .oneOf([Yup.ref('password')], 'Passwords must match'),
+      remember:Yup.boolean().oneOf([true], 'You should agree our terms!').required('You should agree our terms!')
   });
 
-  const handleSigup = async (values) => {
+  const handleSignup = async (values) => {
     try {
       const signupData = {
         first_name: values.firstname,
@@ -26,13 +31,43 @@ export default function SignupForm({btnName,lineThrough}) {
         password: values.password,
         password_confirmation: values.passwordconfirmation
       };
-      console.log(signupData);
       const res = await axios.post('https://bookstore.eraasoft.pro/api/register', signupData);
-      console.log(res);
-    } catch (err) {
-      console.log(err);
-    }
+      console.log(res.data);
+      if(res){
+              Swal.fire({
+        title: "Login successed!",
+        icon: "success",
+        draggable: true
+      });
+         navigate('/login');
+            }
+      
+ 
+    } catch (error) {
+  const status = error.response?.status;
+  console.log(status);
+  const message = error.response?.data?.message;
+
+  if (status === 500) {
+            Swal.fire({
+        title: "Account already exist!",
+        icon: "warning",
+        draggable: true
+      });
+  } 
+  if (status === 422) {
+      Swal.fire({
+        title: "Invalid data!",
+        icon: "error",
+        draggable: true
+      });
+  } 
+}
   };
+  const [showPassword,setShowPassword] = useState(false);
+  useEffect(()=> {
+   setShowPassword(true);
+  },[]);
 
   return (
     <div className="w-full lg:w-[760px] px-1 lg:px-0 lg:self-center flex  justify-center items-center h-full">
@@ -47,7 +82,7 @@ export default function SignupForm({btnName,lineThrough}) {
             remember: false
           }}
           validationSchema={signupSchema}
-          onSubmit={handleSigup}
+          onSubmit={handleSignup}
         >
           <Form className="w-full flex flex-col gap-[24px]">
             <div className=" hidden w-full lg:flex justify-between">
@@ -111,15 +146,19 @@ text-[#222222] w-full h-[54px] border-1 border-[#22222240] bg-[#FFFFFF] placehol
 
             <div className="w-full flex flex-col gap-[14px]">
               <label className="text-[16px] lg:text-[18px] font-semibold text-[#222222]">Password</label>
-              <div className="relative w-full">
+              <div className="relative w-full inline-block">
                 <Field
                   className="z-0 input w-full text-[16px]
 text-[#222222] h-[54px] bg-[#FFFFFF] border-1 border-[#22222240] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal"
                   placeholder="**********"
                   name="password"
+                  type={showPassword?'text':'number'}
                 />
                 <ErrorMessage name="password" component="p" className="text-red-700 px-2 py-2" />
-                <FaEye className="absolute right-4 top-7 lg:top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" />
+                
+                <FaEye className="absolute right-4 top-7 lg:top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10"
+                       onClick={(e) => setShowPassword(!showPassword)}
+                        />
               </div>
 
               <label className="text-[16px] lg:text-[18px] font-semibold text-[#222222]">Confirm password</label>
@@ -129,9 +168,12 @@ text-[#222222] h-[54px] bg-[#FFFFFF] border-1 border-[#22222240] placeholder:tex
 text-[#222222] w-full border-1 border-[#22222240]  h-[54px] bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:text-[16px] placeholder:font-normal mb-[10px]"
                   placeholder="**********"
                   name="passwordconfirmation"
+                  type={showPassword?'text':'number'}
                 />
                 <ErrorMessage name="passwordconfirmation" component="p" className="text-red-700 px-2 py-2" />
-                <FaEye className="absolute right-4 top-7 lg:top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" />
+                <FaEye className="absolute right-4 top-7 lg:top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" 
+                       onClick={() => setShowPassword(!showPassword)}
+                       />
               </div>
 
               <div className="w-full flex justify-between items-center">
@@ -143,12 +185,19 @@ text-[#222222] flex items-center gap-[8px]">
                     name="remember"
                     className="h-5 w-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
                   />
-                  <ErrorMessage name="remember" component="p" className="text-red-500 text-center" />
+                  
+                  <div>
+                    
+                  </div>
                   <div className="text-[#222222] w-full flex text-[12px] font-normal select-none">
                     <p>Agree with <span className="text-orange-600">Terms & Conditions</span></p>
+                    
                   </div>
+                  
                 </section>
+                
               </div>
+              <ErrorMessage name="remember" component="p" className="text-red-700 px-2 py-2" />
 
               <button
                 type="submit"
@@ -199,7 +248,10 @@ text-[#222222] flex items-center gap-[8px]">
       <div className="h-px bg-gray-300"></div>
     </div>
                   <div className=" w-full text-[#222222] text-[16px] font-normal lg:flex justify-items-center ">
-                <p>Already have an account?<a href="#" className="text-[#D9176C] text-[16px] font-semibold">Login</a></p>
+                <p>Already have an account?<a  className="text-[#D9176C] text-[16px] font-semibold"
+                                                        onClick={() => navigate('/login')}
+                                            >Login</a>
+                </p>
               </div>
               <div className="w-full order-3 lg:order-2 flex justify-items-center lg:flex-col justify-between ">
                               <div className="w-full   relative">
