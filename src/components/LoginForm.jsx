@@ -3,8 +3,12 @@ import { FaEye, FaFacebook } from "react-icons/fa";
 import { FcGoogle } from "react-icons/fc";
 import axios from "axios";
 import * as Yup from 'yup';
+import Swal from 'sweetalert2';
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const loginSchema = Yup.object({
     email: Yup.string()
       .email('Please enter a valid email!')
@@ -22,11 +26,61 @@ export default function LoginForm() {
         password: values.password
       };
       const res = await axios.post('https://bookstore.eraasoft.pro/api/login', loginData);
-      console.log(res);
+      console.log(res.data);
+      if(res){
+        Swal.fire({
+  title: "Login successed!",
+  icon: "success",
+  draggable: true
+});
+   navigate('/afterlogin');
+      }
+
+     
     } catch (err) {
-      console.log(err);
+    
+      console.log(err.response.status);
+      if(err.response?.status == 422){
+        Swal.fire({
+  title: "Invalid Data!",
+  text: "Plese,check your account setails or sign up! ",
+  icon: "error",
+  showCancelButton: true,
+  confirmButtonColor: "#3085d6",
+  cancelButtonColor: "#d33",
+  cancelButtonText: 'Close window',
+  confirmButtonText: "Sign up"
+}).then((result) => {
+  if (result.isConfirmed) {
+   Swal.fire({
+  title: "Auto close alert!",
+  html: "Redirecting in 2 seconds! ",
+  timer: 2000,
+  timerProgressBar: true,
+  didOpen: () => {
+    Swal.showLoading();
+    const timer = Swal.getPopup().querySelector("b");
+    timerInterval = setInterval(() => {
+      timer.textContent = `${Swal.getTimerLeft()}`;
+    }, 100);
+  },
+  willClose: () => {
+    clearInterval(timerInterval);
+  }
+}).then((result) => {
+  if (result.dismiss === Swal.DismissReason.timer) {
+    console.log("I was closed by the timer");
+  }
+});
+
+    navigate('/signup');
+  }
+});
+      }
     }
   };
+
+  const [showPassword,setShowPassword] = useState(false);
 
   return (
     <div className="w-full flex justify-center items-center h-dvh px-1 lg:px-0">
@@ -54,9 +108,10 @@ export default function LoginForm() {
                   className="z-0 input w-full text-neutral-900 h-[54px] bg-[#FFFFFF] placeholder:text-[#13131333] placeholder:lg:text-[16px] placeholder:text-[12px] placeholder:font-normal"
                   placeholder="Enter password"
                   name="password"
+                  type={showPassword?'text':'password'}
                 />
                 <ErrorMessage name="password" component="p" className="text-red-700 px-2 py-2" />
-                <FaEye className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" />
+                <FaEye className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer z-10" onClick={() => setShowPassword(!showPassword)} />
               </div>
             </div>
             <div className="w-full flex gap-[99px] lg:gap-[323px]  items-center">
@@ -72,7 +127,8 @@ export default function LoginForm() {
                   Remember me
                 </label>
               </section>
-              <a href="#" className="text-[#D9176C]  w-full font-normal text-[14px] lg:text-[16px]">Forget password?</a>
+              <a href="#" className="text-[#D9176C]  w-full font-normal text-[14px] lg:text-[16px]" 
+                          onClick={()=> {navigate('/forget')}}>Forget password?</a>
             </div>
             <button
               type="submit"
@@ -82,7 +138,7 @@ export default function LoginForm() {
             </button>
             <div className="w-full order-2 lg:order-3 text-[#222222] text-[16px] font-normal flex justify-center mt-0 lg:mt-[40px]">
 
-              <p>Don’t have an account?<a href="#" className="text-[#D9176C] text-[16px] font-semibold">Signup</a></p>
+              <p>Don’t have an account?<a href="#" className="text-[#D9176C] text-[16px] font-semibold" onClick={()=>{navigate('/signup')}}>Signup</a></p>
             </div>
             <div className="w-full h-[148px] gap-[12px] flex flex-col items-center mt-[40px]">
                   <div className="w-full order-1 grid grid-cols-[1fr_auto_1fr] items-center gap-4">

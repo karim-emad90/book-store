@@ -36,6 +36,7 @@ export default function AppRoutes() {
         <Route element={<MainLyout/>}>
            <Route path='/' element={<BeforeLogin/>}></Route>
            <Route path='/beforelogin' element={<BeforeLogin/>}></Route>
+           <Route path='/afterlogin' element={<AfterLogin/>}></Route>
 
         </Route>
 

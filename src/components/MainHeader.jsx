@@ -1,5 +1,5 @@
-import { NavLink, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import bookIcon from '../assets/LoginPage/book-bookmark 1.png';
 import BigLibrary from '../assets/HomPage/big-library.png';
 import { FaMicrophone } from "react-icons/fa";
@@ -7,6 +7,7 @@ import { CiSearch } from "react-icons/ci";
 import AuthHeader from './AuthHeader';
 import { IoCartOutline } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
+import avatar from '../assets/AfterLoginPage/Avatar Image (1).png';
 
 
 
@@ -27,6 +28,18 @@ export default function MainHeader() {
         navigate('/signup')
     }
   const [openMenu, setOpenMenu] = useState(false);
+  const location = useLocation();
+  const [hideAfterLoginHeader,setHideAfterLoginHeader] = useState('');
+  const [hideBeforeLoginHeader, setHideBeforeLoginHeader] = useState('');
+
+  useEffect(() => {
+    if(location.pathname == '/afterlogin'){
+       setHideAfterLoginHeader('hidden');
+    }
+    if(location.pathname == '/' || location.pathname == '/beforelogin'){
+      setHideBeforeLoginHeader('hidden');
+    }
+  },[])
 
   return (
   
@@ -83,7 +96,7 @@ export default function MainHeader() {
 
     </div>
 
-        <div className=" flex items-center gap-[10px]">
+        <div className={`${hideAfterLoginHeader} flex items-center gap-[10px]`}>
           <button 
           className="btn h-[40px] px-4 bg-[#D9176C] border-0 text-white"
           onClick={navigateLogin}
@@ -95,6 +108,38 @@ export default function MainHeader() {
           className="btn h-[40px] px-4 bg-white text-[#D9176C] border border-[#D9176C]">
             Signup
           </button>
+        </div>
+
+        <div className={`${hideBeforeLoginHeader} flex  items-center gap-[10px]`}> 
+
+          <div className="w-full flex items-center gap-[24px]">
+                      <div className='relative w-full'>
+            <CiHeart className='text-4xl'/>
+            <button className="absolute -top-1 right-0 w-[18px] h-[18px] rounded-full bg-[#D9176C] text-white text-[10px] border border-white">12</button>
+          </div>
+
+                        <div className='relative w-full'>
+            <IoCartOutline className='text-4xl'/>
+            <button className="absolute -top-1 right-0 w-[18px] h-[18px] rounded-full bg-[#D9176C] text-white text-[10px] border border-white">10</button>
+          </div>
+
+
+
+          </div>
+
+          <div className='w-full flex gap-[10px] items-center'>
+            <div className='relative w-[40px] h-[40px]'>
+              <img src={avatar} className='w-full h-full rounded-full cover' alt="" />
+              <div className='absolute top-0 right-0 w-[9.6px] h-[9.6px] bg-green-600 rounded-full border-[2px]'></div>
+            </div>
+
+            <div className='w-full flex flex-col gp-[4px]'>
+              <h3 className='text-[16px] text-[#FFFFFF]'>John Smith</h3>
+              <p className='text-[14px] text-[#ffffff80]'>Johnsmith@gmail.com</p>
+            </div>
+          </div>
+
+
         </div>
 
 
@@ -164,10 +209,10 @@ export default function MainHeader() {
          <IoCartOutline className='w-[16px] h-[16px]' />
 
       </button>
-      <buuton className="flex justify-center items-center rounded-full w-[40px] h-[40px] bg-[#FFFFFF] border-[#D9176C]">
+      <button className="flex justify-center items-center rounded-full w-[40px] h-[40px] bg-[#FFFFFF] border-[#D9176C]">
            <CiHeart className='w-[16px] h-[16px] text-[#D9176C]' />
 
-      </buuton>
+      </button>
     </div>
     </div>
 
