@@ -110,7 +110,7 @@ export default function MainHeader() {
         className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${BigLibrary})` }}
       >
-        <div className='flex relative justify-self-center top-[50%]  w-[536px] z-22 h-[59px]'>
+        <div className='flex relative justify-self-center top-[50%] w-full  lg:w-[536px] z-22 h-[59px]'>
   <div className="relative w-full">
     <input
       type="text"
@@ -142,9 +142,9 @@ export default function MainHeader() {
 
     <div className='w-full  h-full flex flex-col gap-[24px]'>
     <AuthHeader hidden={'hidden'}/>
-    <div className='lg:hidden w-full flex gap-[16px] justify-center '>
-      <div className='w-[239px] flex h-[38px]'>
-        <div className='w-[192.99px] relative'>
+    <div className='lg:hidden w-full flex gap-[16px] justify-items-center '>
+      <div className='lg:w-[239px] w-full flex h-[38px]'>
+        <div className='w-[178px] relative'>
            <input type="text" className='outline-0 pl-[16px] w-full h-full border-r-0 rounded-r-0 rounded-l-xl border-[#22222233] bg-[#FFFFFF] text-[16px] text-black placeholder:text-[#22222233] placeholder:text-[12px]'
                               placeholder='Serach'  />
                <FaMicrophone
@@ -159,7 +159,7 @@ export default function MainHeader() {
         </button>
       </div>
 
-          <div className='w-full flex gap-[8px]'>
+          <div className='w-full flex gap-[8px] justify-items-center'>
       <button className="flex justify-center items-center rounded-full w-[38px] h-[38px] bg-[#D9176C]">
          <IoCartOutline className='w-[16px] h-[16px]' />
 
