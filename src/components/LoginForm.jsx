@@ -100,7 +100,7 @@ export default function LoginForm() {
                   Login with Google
                 </button>
 
-                <button className="lg:hidden btn w-[50%] w-[163.5px] h-[54px] h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
+                <button className="lg:hidden btn  w-[163.5px] h-[54px] h-[46px] bg-[#FFFFFF] text-[#222222] text-[16px] lg:text-[14px] font-normal border-0 rounded-xl">
                   Google
                 </button>
                 <FcGoogle className="absolute w-[22px] h-[22px] lg:w-[20px] lg:h-[20px] left-[30px] top-[15px] lg:left-[208px] lg:top-[12px]" />
