@@ -2,6 +2,7 @@ import BeforeLoginHeader from '../components/BeforeLoginHeader';
 import AuthHeader from '../components/AuthHeader'
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 export default function ForgetPassword() {
   const validationSchema = Yup.object({
@@ -10,9 +11,25 @@ export default function ForgetPassword() {
           .required('You must fill this field!'),
   })
 
-  const handleSubmit = (values) => {
-      console.log(values);
+ 
+   
+    const forgetPassword = async(values) => {
+           try{ 
+            const res = axios.post('https://bookstore.eraasoft.pro/api/forget-password','mostafa@gmail.com');
+            console.log(res);
+
+    }
+
+    catch(err){
+     console.log(err);
+    }
+    
   }
+
+ 
+    
+   
+  
   return (
     
     <div className='h-full w-full lg:max-w-full mx-auto  bg-[#F5F5F5] flex flex-col gap-[40px] lg:gap-[14px]'>
@@ -29,7 +46,7 @@ export default function ForgetPassword() {
               email:''
             }}
             validationSchema={validationSchema}
-            onSubmit={(values) => handleSubmit(values)}>
+            onSubmit={(values) => forgetPassword(values)}>
               <Form className='w-full flex flex-col gap-[40px]'>
                 <div className='w-full flex flex-col gap-[8px]'>
                   <label className='text-[18px] text-[#222222] font-semibold'>Email</label>

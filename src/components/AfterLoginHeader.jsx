@@ -1,10 +1,13 @@
 
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import libraryBackGround from '../assets/LoginPage/library-background.png';
 import MainHeader from './MainHeader';
 
+
+
 export default function AfterLoginHeader() {
+
             const navigate = useNavigate();
     const navigateLogin = ()=>{
      navigate('/login')
@@ -13,6 +16,8 @@ export default function AfterLoginHeader() {
     const navigateSignup = () => {
         navigate('/signup')
     }
+
+   
   const [openMenu, setOpenMenu] = useState(false);
   return (
 

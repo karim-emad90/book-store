@@ -31,9 +31,21 @@ export default function MainHeader() {
   const location = useLocation();
   const [hideAfterLoginHeader,setHideAfterLoginHeader] = useState('');
   const [hideBeforeLoginHeader, setHideBeforeLoginHeader] = useState('');
+   const [headerHeight,setHeaderHight] = useState('');
+    const [hideSearch,setHideSearch] = useState('')
+
+    useEffect(() => {
+  if(location.pathname == '/books'){
+    setHeaderHight('h-[120px]');
+    setHideSearch('hidden');
+    
+  }else{
+    setHeaderHight('h-[804px]');
+  }
+})
 
   useEffect(() => {
-    if(location.pathname == '/afterlogin'){
+    if(location.pathname == '/afterlogin' || location.pathname == '/books'){
        setHideAfterLoginHeader('hidden');
     }
     if(location.pathname == '/' || location.pathname == '/beforelogin'){
@@ -44,7 +56,7 @@ export default function MainHeader() {
   return (
   
     <>
-            <div className=" hidden lg:block w-full lg:h-[804px] relative overflow-hidden">
+            <div className={`hidden lg:block w-full lg:${headerHeight}  relative overflow-hidden`}>
 
   
       <div className="relative z-20 w-full h-[92px] bg-white/20 flex items-center justify-between px-4 lg:px-[140px]">
@@ -155,7 +167,7 @@ export default function MainHeader() {
         className="absolute inset-0 z-0 bg-cover bg-no-repeat bg-center"
         style={{ backgroundImage: `url(${BigLibrary})` }}
       >
-        <div className='flex relative justify-self-center top-[50%] w-full  lg:w-[536px] z-22 h-[59px]'>
+        <div className={`${hideSearch} flex relative justify-self-center top-[50%] w-full  lg:w-[536px] z-22 h-[59px]`}>
   <div className="relative w-full">
     <input
       type="text"
