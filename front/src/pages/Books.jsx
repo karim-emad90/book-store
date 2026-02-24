@@ -378,8 +378,15 @@ useEffect(() => {
         <div className="w-[881px] h-[1117px] flex flex-col gap-[60px] bg-[#F5F5F5]">
           {
             books.map((book) => {
-              const imgUrl = book?.coverImageUrl?.url || book?.coverImageUrl?.data?.attributes?.url;
-              const imgSrc = imgUrl ? `http://localhost:1337${imgUrl}` : richDadBook;
+const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
+const imgUrl =
+  book?.coverImageUrl?.url ||
+  book?.coverImageUrl?.data?.attributes?.url;
+
+const imgSrc = imgUrl
+  ? (imgUrl.startsWith("http") ? imgUrl : `${base}${imgUrl}`)
+  : richDadBook;
 
               return (
                 <div key={book.documentId} className="w-full flex gap-[24px]">
