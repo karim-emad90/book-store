@@ -8,6 +8,7 @@ import AuthHeader from './AuthHeader';
 import { IoCartOutline } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
 import avatar from '../assets/AfterLoginPage/Avatar Image (1).png';
+import { getCartCount, getFavCount } from "../utils/store";
 
 
 
@@ -35,25 +36,31 @@ export default function MainHeader() {
     
    const [headerHeight,setHeaderHight] = useState(false);
 
-    useEffect(() => {
-      
-      
-  if(location.pathname == '/books'){
-    
-    setHideSearch('hidden');
+  
+
+const [cartCount, setCartCount] = useState(getCartCount());
+const [favCount, setFavCount] = useState(getFavCount());
+
+useEffect(() => {
+  if (location.pathname === "/books" || location.pathname === "/cart") {
+    setHideSearch("hidden");
     setHeaderHight(true);
-    
+  } else {
+    setHideSearch("");
+    setHeaderHight(false);
   }
-})
+}, [location.pathname]);
 
   useEffect(() => {
-    if(location.pathname == '/afterlogin' || location.pathname == '/books'){
-       setHideAfterLoginHeader('hidden');
-    }
-    if(location.pathname == '/' || location.pathname == '/beforelogin'){
-      setHideBeforeLoginHeader('hidden');
-    }
-  },[])
+  const update = () => {
+    setCartCount(getCartCount());
+    setFavCount(getFavCount());
+  };
+
+  window.addEventListener("storage-update", update);
+
+  return () => window.removeEventListener("storage-update", update);
+}, []);
 
   return (
   
@@ -129,14 +136,14 @@ export default function MainHeader() {
           <div className="w-full flex items-center gap-[24px]">
                       <div className='relative w-full'>
             <CiHeart className='text-4xl'/>
-            <button className="absolute -top-1 right-0 w-[18px] h-[18px] rounded-full bg-[#D9176C] text-white text-[10px] border border-white">12</button>
+            <button className="absolute -top-1 right-0 w-[18px] h-[18px] rounded-full bg-[#D9176C] text-white text-[10px] border border-white">{favCount}</button>
           </div>
 
-                        <div className='relative w-full'>
-            <IoCartOutline className='text-4xl'/>
-            <button className="absolute -top-1 right-0 w-[18px] h-[18px] rounded-full bg-[#D9176C] text-white text-[10px] border border-white">10</button>
+                        <div className='relative w-full ' onClick={() => navigate('/cart')}>
+            <IoCartOutline  className='text-4xl'/>
+            <button  className="absolute -top-1 right-0 w-[18px] h-[18px] rounded-full bg-[#D9176C] text-white text-[10px] border border-white">{cartCount}</button>
           </div>
-
+ 
 
 
           </div>
@@ -219,7 +226,7 @@ export default function MainHeader() {
       </div>
 
           <div className='w-[88px] flex gap-[8px] justify-items-center'>
-      <button className="flex justify-center items-center rounded-full w-[40px] h-[40px] bg-[#D9176C]">
+      <button onClick={() => navigate('/cart')} className="flex justify-center items-center rounded-full w-[40px] h-[40px] bg-[#D9176C]">
          <IoCartOutline className='w-[16px] h-[16px]' />
 
       </button>

@@ -8,6 +8,8 @@ import { FaRegHeart } from 'react-icons/fa';
 import RatingStars from '../store/RatingStars';
 import richDadBook from '../assets/LoginPage/richdadbook.png';
 import api from '../api'
+import { addToCartOnce, toggleFav, isFav } from "../utils/store";
+import BookRow from "../components/BookRow";
 
 export default function Books() {
   const [toggleText, setToggleText] = useState('Load More');
@@ -376,86 +378,22 @@ useEffect(() => {
         </div>
 
         <div className="w-[881px] h-[1117px] flex flex-col gap-[60px] bg-[#F5F5F5]">
-          {
-            books.map((book) => {
-const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+          { 
+books.map((book) => {
+  const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
-const imgUrl =
-  book?.coverImageUrl?.url ||
-  book?.coverImageUrl?.data?.attributes?.url;
+  const imgUrl =
+    book?.coverImageUrl?.url ||
+    book?.coverImageUrl?.data?.attributes?.url;
 
-const imgSrc = imgUrl
-  ? (imgUrl.startsWith("http") ? imgUrl : `${base}${imgUrl}`)
-  : richDadBook;
+  const imgSrc = imgUrl
+    ? imgUrl.startsWith("http")
+      ? imgUrl
+      : `${base}${imgUrl}`
+    : richDadBook;
 
-              return (
-                <div key={book.documentId} className="w-full flex gap-[24px]">
-                  {/* ✅ هنا التعديل: object-cover لتوحيد شكل الصور */}
-                  <img
-                    src={imgSrc}
-                    alt={book.title}
-                    className="w-[173px] h-[253px] shrink-0 object-cover object-center rounded-md bg-white"
-                  />
-
-                  <div className='w-full flex flex-col gap-[24px]'>
-                    <div className="w-full flex gap-[35px]">
-                      <div className="w-[424px] flex flex-col gap-[8px]">
-                        <h3 className='text-[16px] max-w-[182px] truncate  text-[#222222] font-bold'>{book.title}</h3>
-                        <p className='hidden lg:block w-full h-[88px]  text-[14px] text-[#222222] font-normal'>
-                          {book.description}
-                        </p>
-                      </div>
-
-                      <div className='w-[198px] h-[35px] border bg-[#FFFFFF] border-[#EBC305] rounded-xl flex justify-center items-center'>
-                        <p className='text-[14px] font-[400] text-[#EBC305]'>25% Discount code: {book.discountCode}</p>
-                      </div>
-                    </div>
-
-                    <div className="w-full flex gap-[215px]">
-                      <div className="w-[198px] flex flex-col gap-[16px]">
-                        <div className='w-full h-[35px]  lg:h-[43px] flex flex-col gap-[8px]'>
-                          <div className='w-full flex gap-[8px]'>
-                            <div className='w-[116px]'>
-                              <RatingStars />
-                            </div>
-                            <p className='lg:text-[12px] text-[10px] font-semibold text-[#222222]'>({book.reviewsCount} Review)</p>
-                          </div>
-
-                          <p className='hidden lg:block text-[14px] text-[#222222] font-semibold'>
-                            <span className='text[14px] text-[#222222] font-light'>Rate:</span>{book.rating}
-                          </p>
-                        </div>
-
-                        <div className="w-full flex gap-[40px]">
-                          <p className='flex flex-col text-[14px] text-[#222222] font-semibold'>
-                            <span className='text-[14px] text-[#22222280]'>Author</span>{book.author}
-                          </p>
-                          <p className='flex flex-col text-[14px] text-[#222222] font-semibold'>
-                            <span className='text-[14px] text-[#22222280]'>Year</span>{book.year}
-                          </p>
-                        </div>
-                      </div>
-
-                      <div className="w-[244px] flex flex-col gap-[24px]">
-                        <p className='lg:text-[26px] text-[18px] font-semibold text-[#222222]'>$ {book.price}</p>
-
-                        <div className='w-full flex gap-[16px]'>
-                          <button className='w-[32px] h-[32px] flex items-center justify-center gap-[10px] lg:w-[180px] lg:h-[48px] bg-[#D9176C] rounded-lg text-[16px] text-[#FFFFFF] font-semibold'>
-                            Add To Cart
-                            <IoCartOutline className=' text-lg' />
-                          </button>
-
-                          <button className=' w-[32px] h-[32px] flex items-center justify-center lg:w-[48px] lg:h-[48px] bg-[#FFFFFF] rounded-lg border border-[#D9176C] text-[#D9176C]'>
-                            <FaRegHeart className='text-lg' />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-
-                  </div>
-                </div>
-              )
-            })
+  return <BookRow key={book.documentId} book={book} imgSrc={imgSrc} />;
+})
           }
 
           <div className="w-full flex flex-col items-center gap-2 mt-8">

@@ -20,6 +20,7 @@ import RecommendedBooks from '../pages/RecommendedBooks'
 import BeforeLoginHeader from '../components/BeforeLoginHeader'
 import AboutLayout from '../layouts/AboutLayout'
 import AboutPage from '../pages/AboutPage'
+import MyCart from '../pages/MyCart'
 
 export default function AppRoutes() {
   return (
@@ -56,6 +57,7 @@ export default function AppRoutes() {
         </Route>
 
         <Route element={<BooksLyout/>}>
+           <Route path='/cart' element={<MyCart/>}></Route>
            <Route path='/books' element={<Books/>}></Route>
            <Route path='/bookdetails' element={<Product/>}></Route>
            <Route path='/review' element={<CustomerReview/>}></Route>
