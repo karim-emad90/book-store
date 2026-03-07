@@ -81,21 +81,22 @@ export function saveCart(cart) {
 export function addToCartOnce(book) {
   const cart = getCart();
 
-  const id = book.documentId;
+  const id = book?.documentId ?? book?.id;
   const exists = cart.find((item) => item.id === id);
 
   if (!exists) {
     cart.push({
       id,
-      title: book.title ,
-      author:book.author,
-      description:book.description,
-      discountCode:book.discountCode,
-      isbn13:book.isbn13,
-      price: book.price ?? 0,
-      image: book.coverImageUrl ??  null,
+      title: book?.title,
+      author: book?.author,
+      description: book?.description,
+      discountCode: book?.discountCode,
+      isbn13: book?.isbn13,
+      price: Number(book?.price ?? 0),
+      image: book?.coverImageUrl ?? null,
       qty: 1,
     });
+
     saveCart(cart);
   }
 }

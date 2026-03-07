@@ -7,6 +7,10 @@ import richDadBook from "../assets/LoginPage/richdadbook.png";
 import api from "../api";
 import BookRow from "../components/BookRow";
 import { useOutletContext } from "react-router-dom";
+import MobileFooter from "../components/MobileFooter";
+import { addToCartOnce, toggleFav, isFav } from "../utils/store";
+import { CiHeart } from "react-icons/ci";
+
 
 export default function Books() {
   const [toggleText, setToggleText] = useState("Load More");
@@ -20,6 +24,8 @@ export default function Books() {
   const [pageSize] = useState(3);
   const [total, setTotal] = useState(0);
   const [pageCount, setPageCount] = useState(1);
+
+  const [favRefresh, setFavRefresh] = useState(0);
 
   const { search, setSearch } = useOutletContext();
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -104,6 +110,12 @@ export default function Books() {
     }
   };
 
+  const handleToggleFav = (book) => {
+  const id = book?.documentId ?? book?.id;
+  toggleFav(id);
+  setFavRefresh((prev) => prev + 1);
+};
+
   useEffect(() => {
     fetchCategories();
   }, []);
@@ -136,26 +148,23 @@ export default function Books() {
     return () => document.removeEventListener("click", onClick);
   }, []);
 
-  const getPageItems = (current, totalPages) => {
-    if (totalPages <= 3) {
-      return Array.from({ length: totalPages }, (_, i) => i + 1);
-    }
+const getPageItems = (current, totalPages) => {
+  if (totalPages <= 1) return [1];
 
-    let start = Math.max(1, current - 1);
-    let end = start + 2;
+  const pages = new Set();
 
-    if (end > totalPages) {
-      end = totalPages;
-      start = Math.max(1, end - 2);
-    }
+  if (current > 1) pages.add(current - 1);
+  pages.add(current);
+  if (current < totalPages) pages.add(current + 1);
 
-    const pages = [];
-    for (let i = start; i <= end; i++) pages.push(i);
+  const sortedPages = [...pages].sort((a, b) => a - b);
 
-    if (end < totalPages) pages.push("...");
+  if (sortedPages[sortedPages.length - 1] < totalPages) {
+    sortedPages.push("...");
+  }
 
-    return pages;
-  };
+  return sortedPages;
+};
 
   const pageItems = getPageItems(page, pageCount);
 
@@ -335,7 +344,7 @@ export default function Books() {
                         <div className="mt-2 text-[13px] text-[#22222280]">
                           Author
                         </div>
-                        <div className="text-[14px] text-[#222222] font-medium">
+                        <div className="text-[14px] w-[60px] overflow-hidden text-[#222222] font-medium">
                           {book.author || "Unknown"}
                         </div>
 
@@ -347,15 +356,42 @@ export default function Books() {
                         </div>
                       </div>
 
-                      <div className="flex flex-col items-end gap-3">
-                        <p className="text-[20px] font-semibold text-[#222222]">
-                          ${book.price || 14.99}
-                        </p>
+<div className="flex flex-col items-end gap-3">
+  <p className="text-[20px] font-semibold text-[#222222]">
+    ${book.price || 14.99}
+  </p>
 
-                        <button className="h-11 px-5 rounded-xl bg-[#D9176C] text-white text-[15px] font-medium shadow">
-                          Add to Cart
-                        </button>
-                      </div>
+  <div className="flex items-center gap-2">
+    <button
+      onClick={() => handleToggleFav(book)}
+      className={`w-11 h-11 rounded-full flex items-center justify-center border transition ${
+        isFav(book?.documentId ?? book?.id)
+          ? "bg-[#D9176C] border-[#D9176C]"
+          : "bg-white border-[#D9176C]"
+      }`}
+    >
+      <CiHeart
+        className={`w-5 h-5 ${
+          isFav(book?.documentId ?? book?.id)
+            ? "text-white"
+            : "text-[#D9176C]"
+        }`}
+      />
+    </button>
+
+    <button
+      onClick={() =>
+        addToCartOnce({
+          ...book,
+          coverImageUrl: imgSrc,
+        })
+      }
+      className="h-11 px-5 rounded-xl bg-[#D9176C] text-white text-[15px] font-medium shadow"
+    >
+      Add to Cart
+    </button>
+  </div>
+</div>
                     </div>
                   </div>
                 </div>
@@ -371,7 +407,7 @@ export default function Books() {
         </div>
 
         {/* Mobile Pagination */}
-        <div className="flex flex-col items-center gap-2 pt-2">
+        <div dir="ltr" className="flex items-center gap-2">
           <div className="flex items-center gap-2">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
@@ -388,7 +424,7 @@ export default function Books() {
                 </span>
               ) : (
                 <button
-                  key={it}
+                  key={`${it}-${idx}`}
                   onClick={() => setPage(it)}
                   className={`w-9 h-9 rounded-lg text-sm font-semibold ${
                     page === it
@@ -416,25 +452,7 @@ export default function Books() {
         </div>
 
         {/* Mobile Footer */}
-<div className="mt-6  bg-[#43264F] px-6 pt-5  text-white">
-  <div className="flex items-center justify-center gap-6 text-[15px] font-medium">
-    <button className="hover:text-[#F8D2E3] transition">Home</button>
-
-    <span className="h-5 w-px bg-white/20"></span>
-
-    <button className="hover:text-[#F8D2E3] transition">Books</button>
-
-    <span className="h-5 w-px bg-white/20"></span>
-
-    <button className="hover:text-[#F8D2E3] transition">About Us</button>
-  </div>
-
-  <div className="mt-5 h-px w-full bg-white/10"></div>
-
-  <p className="mt-4 text-center text-[13px] text-white/80 leading-6">
-    Developed by Faissoft • All Copy Rights Reserved ©2024
-  </p>
-</div>
+<MobileFooter/>
       </div>
 
       {/* ================= DESKTOP ================= */}
@@ -651,7 +669,7 @@ export default function Books() {
 
             {/* Desktop Pagination */}
             <div className="w-full flex flex-col items-center gap-2 mt-8">
-              <div className="hidden lg:flex items-center gap-3">
+              <div dir="ltr" className="hidden lg:flex items-center gap-3">
                 <button
                   onClick={() => setPage((p) => Math.max(1, p - 1))}
                   disabled={page === 1}
