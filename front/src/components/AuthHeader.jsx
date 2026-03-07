@@ -1,22 +1,12 @@
 import React from 'react'
 import { MdOutlineKeyboardArrowLeft } from 'react-icons/md'
-import cellular from '../assets/MainAuthHeader/Cellular Connection.png';
-import wifi from '../assets/MainAuthHeader/Wifi.png';
-import battery from '../assets/MainAuthHeader/Battery.png';
 import { useNavigate } from 'react-router-dom';
 
 export default function AuthHeader({title,hidden}) {
   const navigate = useNavigate();
   return (
 <div className="lg:hidden w-full h-full flex flex-col  gap-[16px] px-1 ">
-      <div className='w-full justify-between   pt-[14px] pb-[10px] items-center flex '>
-       <p className='w-[27px] text-[15px] font-[500] text-black'>9:41</p>
-        <div className=' flex gap-[5px]'>
-          <img className='w-[17px] h-[10.67px]' src={cellular} alt="" />
-          <img className='w-[15.33px] h-[10.67px]' src={wifi} alt="" />
-          <img className='w-[24.33px] h-[10.67px]' src={battery} alt="" />
-        </div>
-      </div>
+ 
 
       <div className={`${hidden} w-full items-center px-[16px] flex gap-[8px]`}>
       <MdOutlineKeyboardArrowLeft className='text-[#000000] h-[22px] w-[22px]'
