@@ -6,7 +6,7 @@ import MobileFooter from "../components/MobileFooter";
 export default function MainLyout() {
   return (
     
-    <div className="flex w-full  flex-col bg-[#F5F5F5] gap-[24px] overflow-x-hidden  ">
+    <div className="flex flex-col bg-[#F5F5F5] gap-[24px] overflow-x-hidden  ">
         <MainHeader/>
     
         <main className="min-h-screen">
