@@ -43,7 +43,7 @@ const [cartCount, setCartCount] = useState(getCartCount());
 const [favCount, setFavCount] = useState(getFavCount());
 
 useEffect(() => {
-  if (location.pathname === "/books" || location.pathname === "/cart") {
+  if (location.pathname === "/books" || location.pathname === "/cart" || location.pathname === "/bookdetails") {
     setHideSearch("hidden");
     setHeaderHight(true);
   } else {

@@ -14,13 +14,12 @@ import ProfileLayout from '../layouts/ProfileLayout'
 import ProfilePage from '../pages/ProfilePage'
 import BooksLyout from '../layouts/BooksLyout'
 import Books from '../pages/Books'
-import Product from '../pages/Product'
 import CustomerReview from '../pages/CustomerReview'
 import RecommendedBooks from '../pages/RecommendedBooks'
-import BeforeLoginHeader from '../components/BeforeLoginHeader'
 import AboutLayout from '../layouts/AboutLayout'
 import AboutPage from '../pages/AboutPage'
 import MyCart from '../pages/MyCart'
+import ProductDetails from '../pages/ProductDetails'
 
 export default function AppRoutes() {
   return (
@@ -59,7 +58,7 @@ export default function AppRoutes() {
         <Route element={<BooksLyout/>}>
            <Route path='/cart' element={<MyCart/>}></Route>
            <Route path='/books' element={<Books/>}></Route>
-           <Route path='/bookdetails' element={<Product/>}></Route>
+           <Route path='/bookdetails' element={<ProductDetails/>}></Route>
            <Route path='/review' element={<CustomerReview/>}></Route>
            <Route path='/recommended' element={<RecommendedBooks/>}></Route>
 
