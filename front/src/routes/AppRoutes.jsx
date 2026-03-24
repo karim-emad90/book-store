@@ -20,6 +20,7 @@ import AboutLayout from '../layouts/AboutLayout'
 import AboutPage from '../pages/AboutPage'
 import MyCart from '../pages/MyCart'
 import ProductDetails from '../pages/ProductDetails'
+import ProductLayout from '../layouts/ProductLayout'
 
 export default function AppRoutes() {
   return (
@@ -58,10 +59,15 @@ export default function AppRoutes() {
         <Route element={<BooksLyout/>}>
            <Route path='/cart' element={<MyCart/>}></Route>
            <Route path='/books' element={<Books/>}></Route>
-           <Route path='/bookdetails' element={<ProductDetails/>}></Route>
            <Route path='/review' element={<CustomerReview/>}></Route>
            <Route path='/recommended' element={<RecommendedBooks/>}></Route>
 
+        </Route>
+
+        <Route element={<ProductLayout/>}>
+           <Route path='/bookdetails' element={<ProductDetails/>}></Route>
+              
+           <Route path="/book/:id" element={<ProductDetails />} />
         </Route>
       
      </Routes>

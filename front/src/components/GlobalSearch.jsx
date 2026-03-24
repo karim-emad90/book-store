@@ -50,10 +50,10 @@ export default function GlobalSearch({ value, onChange }) {
         </button>
       </div>
 
-      <div className="w-[88px] flex gap-[8px] justify-items-center">
+      <div className="w-[70px] flex gap-[8px] justify-items-center">
         <button
           onClick={() => navigate("/cart")}
-          className="relative flex justify-center items-center rounded-full w-[40px] h-[40px] bg-[#D9176C]"
+          className="relative flex justify-center items-center rounded-full w-[30px] h-[30px] bg-[#D9176C]"
         >
           <IoCartOutline className="w-[16px] h-[16px] text-white" />
 
@@ -66,7 +66,7 @@ export default function GlobalSearch({ value, onChange }) {
 
         <button
           onClick={() => navigate("/favorites")}
-          className="relative flex justify-center items-center rounded-full w-[40px] h-[40px] bg-white border border-[#D9176C]"
+          className="relative flex justify-center items-center rounded-full w-[30px] h-[30px] bg-white border border-[#D9176C]"
         >
           <CiHeart className="w-[16px] h-[16px] text-[#D9176C]" />
 

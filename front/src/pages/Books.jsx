@@ -6,7 +6,7 @@ import { IoMicOutline, IoSearchOutline } from "react-icons/io5";
 import richDadBook from "../assets/LoginPage/richdadbook.png";
 import api from "../api";
 import BookRow from "../components/BookRow";
-import { useOutletContext } from "react-router-dom";
+import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
 import MobileFooter from "../components/MobileFooter";
 import { addToCartOnce, toggleFav, isFav } from "../utils/store";
 import { CiHeart } from "react-icons/ci";
@@ -32,6 +32,8 @@ export default function Books() {
 
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
+
+  const navigate = useNavigate();
 
   const toggleLoadMore = () => {
     setToggleText((prev) => (prev === "Load More" ? "Close" : "Load More"));
@@ -299,7 +301,7 @@ const getPageItems = (current, totalPages) => {
         </div>
 
         {/* Mobile Books */}
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-4" >
           {books.map((book) => {
             const imgSrc = getBookImage(book);
 
@@ -307,11 +309,13 @@ const getPageItems = (current, totalPages) => {
               <div
                 key={book.documentId}
                 className="bg-white rounded-2xl p-3 border border-[#22222210] shadow-sm"
+                
               >
                 <div className="flex gap-3">
                   <img
                     src={imgSrc}
                     alt={book.title}
+                    onTouchEnd={() => navigate(`/book/${book.documentId}`)}
                     className="w-[105px] h-min-dvh rounded-xl object-cover bg-[#D9F5FF]"
                   />
 
@@ -361,7 +365,7 @@ const getPageItems = (current, totalPages) => {
     ${book.price || 14.99}
   </p>
 
-  <div className="flex items-center gap-2">
+  <div className="flex w-full items-center gap-2">
     <button
       onClick={() => handleToggleFav(book)}
       className={`w-11 h-11 rounded-full flex items-center justify-center border transition ${
@@ -386,9 +390,9 @@ const getPageItems = (current, totalPages) => {
           coverImageUrl: imgSrc,
         })
       }
-      className="h-11 px-5 rounded-xl bg-[#D9176C] text-white text-[15px] font-medium shadow"
+      className="h-11 w-11  rounded-xl bg-[#D9176C] text-white text-[15px] font-medium shadow"
     >
-      Add to Cart
+      Cart
     </button>
   </div>
 </div>
@@ -663,7 +667,8 @@ const getPageItems = (current, totalPages) => {
             {books.map((book) => {
               const imgSrc = getBookImage(book);
               return (
-                <BookRow key={book.documentId} book={book} imgSrc={imgSrc} />
+                <BookRow key={book.documentId} book={book} imgSrc={imgSrc}
+                         />
               );
             })}
 

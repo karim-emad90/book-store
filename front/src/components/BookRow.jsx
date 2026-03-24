@@ -4,14 +4,17 @@ import { FaRegHeart } from "react-icons/fa";
 import { FaHeart } from "react-icons/fa"; // قلب filled
 import RatingStars from "../store/RatingStars";
 import { addToCart } from "../utils/store";
-import { addToCartOnce, toggleFav, isFav } from "../utils/store";
-import { normalizeBookForCart } from "../utils/normalizeBook";
+import { useNavigate } from "react-router-dom";
+import {toggleFav,isFav} from "../utils/store"
+
 
 export default function BookRow({ book, imgSrc }) {
   const bookId = book.documentId;
 
   // ✅ Hook هنا عادي لأنه ثابت لكل كومبوننت
   const [fav, setFav] = useState(() => isFav(bookId));
+
+  const navigate = useNavigate();
 
   // ✅ عشان لو الهيدر/مكان تاني عمل تحديث
   useEffect(() => {
@@ -26,11 +29,14 @@ export default function BookRow({ book, imgSrc }) {
   };
 
   return (
-    <div className="w-full flex gap-[24px]">
+    <div className="w-full flex gap-[24px] ">
       <img
+        
+           onTouchEnd={() => navigate(`/book/${book.documentId}`)}
+  onClick={() => navigate(`/book/${book.documentId}`)}
         src={imgSrc}
         alt={book.title}
-        className="w-[173px] h-[253px] shrink-0 object-cover object-center rounded-md bg-white"
+        className="cursor-pointer w-[173px] h-[253px] object-cover rounded-md bg-white relative z-10"
       />
 
       <div className="w-full flex flex-col gap-[24px]">
@@ -88,8 +94,9 @@ export default function BookRow({ book, imgSrc }) {
             <div className="w-full flex gap-[16px]">
 <button
   className="btn w-[32px] h-[32px] flex items-center justify-center gap-[10px] lg:w-[180px] lg:h-[48px] bg-[#D9176C] rounded-lg text-[16px] text-[#FFFFFF] font-semibold"
- onClick={() => {
-  addToCart({ ...book, coverImageUrl: imgSrc }); // ✅ دي أهم حاجة
+onClick={(e) => {
+  e.stopPropagation(); // 🔥 مهم جدًا
+  addToCart({ ...book, coverImageUrl: imgSrc });
 }}
 >
   Add To Cart
@@ -99,7 +106,11 @@ export default function BookRow({ book, imgSrc }) {
               {/* ✅ القلب بيتلون */}
               <button
                 className="btn w-[32px] h-[32px] flex items-center justify-center lg:w-[48px] lg:h-[48px] bg-[#FFFFFF] rounded-lg border border-[#D9176C]"
-                onClick={onToggleFav}
+               onClick={(e) => {
+  e.stopPropagation(); // 🔥 مهم
+  toggleFav(id);
+  setFavState(prev => !prev);
+}}
               >
                 {fav ? (
                   <FaHeart className="text-lg text-[#D9176C]" />

@@ -53,7 +53,7 @@ export default function MobileFooter() {
 
     //   </div>
     // </div>
-    <div className="mt-6  bg-[#43264F] px-6 pt-5  text-white">
+    <div className="mt-6 lg:hidden  bg-[#43264F] px-6 pt-5  text-white">
   <div className="flex items-center justify-center gap-6 text-[15px] font-medium">
     <button className="hover:text-[#F8D2E3] transition"
             onClick={() => navigate('/')}>Home</button>

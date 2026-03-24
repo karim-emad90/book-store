@@ -5,7 +5,16 @@ const FAV_KEY = "bookshop_fav";
 
 function toAbsoluteUrl(rawUrl) {
   if (!rawUrl) return null;
+
+  // ✅ لو object خد منه url
+  if (typeof rawUrl === "object") {
+    rawUrl = rawUrl.url;
+  }
+
+  if (typeof rawUrl !== "string") return null;
+
   if (rawUrl.startsWith("http")) return rawUrl;
+
   const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
   return base ? `${base}${rawUrl}` : rawUrl;
 }
@@ -120,9 +129,8 @@ export function clearCart() {
 }
 
 export function getCartCount() {
-  // عدد العناصر (ممكن تخليه مجموع الكميات)
   const cart = getCart();
-  return cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+  return cart.length;
 }
 
 // لو عندك fav functions موجودة سيبها زي ما هي
