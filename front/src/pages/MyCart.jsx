@@ -10,6 +10,7 @@ import {
   removeFromCart,
   changeCartQty,
 } from "../utils/store";
+import { Navigate, useNavigate } from 'react-router-dom';
 
 export default function MyCart() {
    const [cartItems, setCartItems] = useState(() => getCart());
@@ -19,6 +20,8 @@ const [discount, setDiscount] = useState(0);
 const [appliedCode, setAppliedCode] = useState("");
 const [msg, setMsg] = useState({ type: "", text: "" });
 const [code, setCode] = useState("");
+
+const navigate = useNavigate();
 
 // ✅ load saved discount on mount
 useEffect(() => {
@@ -293,7 +296,8 @@ useEffect(() => {
             </div>
 
             <div className="w-full flex flex-col gap-[12px]">
-                <button className='btn w-full h-[48px] text-[16px] font-semibold bg-[#D9176C] rounded-xl border-0'>Check out</button>
+                <button className='btn w-full h-[48px] text-[16px] font-semibold bg-[#D9176C] rounded-xl border-0'
+                        onClick={() => navigate('/checkout')}>Check out</button>
                 <button className='btn w-full h-[48px] text-[16px] font-semibold bg-transparent rounded-xl text-[#D9176C] border border-[#D9176C] '>Keep Shopping</button>
             </div>
         </div>

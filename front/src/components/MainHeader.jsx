@@ -22,7 +22,7 @@ export default function MainHeader({ hidden, search, setSearch }) {
   const [hideSearch, setHideSearch] = useState("");
 
   useEffect(() => {
-    if (location.pathname === "/books" || location.pathname === "/cart" || location.pathname === `/book/${id}`) {
+    if (location.pathname === "/books" || location.pathname === "/cart" || location.pathname === `/book/${id}` || location.pathname === `/checkout`) {
       setHideSearch("hidden");
       setHeaderHeight(true);
     } else {

@@ -21,6 +21,7 @@ import AboutPage from '../pages/AboutPage'
 import MyCart from '../pages/MyCart'
 import ProductDetails from '../pages/ProductDetails'
 import ProductLayout from '../layouts/ProductLayout'
+import CheckOut from '../pages/CheckOut'
 
 export default function AppRoutes() {
   return (
@@ -58,6 +59,7 @@ export default function AppRoutes() {
 
         <Route element={<BooksLyout/>}>
            <Route path='/cart' element={<MyCart/>}></Route>
+           <Route path='/checkout' element={<CheckOut/>}></Route>
            <Route path='/books' element={<Books/>}></Route>
            <Route path='/review' element={<CustomerReview/>}></Route>
            <Route path='/recommended' element={<RecommendedBooks/>}></Route>
