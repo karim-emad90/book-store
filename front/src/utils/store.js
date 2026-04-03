@@ -176,3 +176,11 @@ export function isFav(id) {
   const fav = getFav();
   return fav.includes(id);
 }
+
+export const isInCart = (id) => {
+  const cart = JSON.parse(localStorage.getItem("bookshop_cart")) || [];
+
+  return cart.some(
+    (item) => String(item.id) === String(id)
+  );
+};

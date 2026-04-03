@@ -13,6 +13,8 @@ import {
 } from "../utils/store";
 import * as Yup from "yup";
 import { ErrorMessage } from "formik";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 
 export const checkoutSchema = Yup.object({
@@ -161,6 +163,61 @@ export default function CheckOut() {
 
 
 const [isShippingValid, setIsShippingValid] = useState(false);
+
+const navigate = useNavigate();
+
+const showOverlayToast = () => {
+  toast.custom(
+    (t) => (
+      <div
+        className={`fixed inset-0 z-[9999] flex items-center justify-center`}
+        style={{
+          width: "100vw",
+          height: "100vh",
+        }}
+      >
+        {/* الخلفية */}
+        <div className="absolute  inset-0 bg-black/50"></div>
+
+        {/* الكارد */}
+        <div className="relative bg-white rounded-[28px] px-10 py-12 text-center w-full  shadow-2xl lg:w-[380px]">
+          
+          {/* الدائرة الخضرا */}
+          <div className="flex justify-center mb-6">
+            <div className="w-[90px] h-[90px] rounded-full bg-green-500 flex items-center justify-center shadow-lg">
+              <span className="text-white text-[40px] font-bold">✓</span>
+            </div>
+          </div>
+
+          {/* العنوان */}
+          <h2 className="text-[28px] font-semibold text-[#222] mb-2">
+            Successful!
+          </h2>
+
+          {/* الوصف */}
+          <p className="text-[16px] text-gray-500 mb-8">
+            Your order has been confirmed
+          </p>
+
+          {/* الزرار */}
+          <button
+            onClick={() => {
+              toast.dismiss(t.id);
+              navigate("/books");
+            }}
+            className="w-full h-[56px] bg-[#D9176C] hover:bg-pink-700 text-white rounded-xl text-[16px] font-semibold"
+          >
+            Keep shopping
+          </button>
+        </div>
+      </div>
+    ),
+    {
+      duration: Infinity,
+      position: "top-center", // مهم
+    }
+  );
+};
   return (
     <div className="w-full h-full py-[30px] px-[16px] sm:py-[60px] sm:px-[50px] flex flex-col lg:flex-row gap-[24px] bg-[#F5F5F5]">
 
@@ -185,6 +242,8 @@ const [isShippingValid, setIsShippingValid] = useState(false);
     useEffect(() => {
   setIsShippingValid(isValid);
 }, [isValid]);
+
+
     return(
         <Form className="w-full lg:w-[760px] p-[20px] sm:p-[40px] rounded-xl bg-[#FFFFFF] flex flex-col gap-[24px]">
 
@@ -317,8 +376,38 @@ const [isShippingValid, setIsShippingValid] = useState(false);
   }}
   validationSchema={checkoutSchema}
   onSubmit={(values) => {
-    console.log(values);
-  }}
+  // هنا المفروض تبعت order للـ API
+
+  // 🧹 امسح الكارت
+  localStorage.removeItem("cart");
+
+  // 🔥 التوست
+  toast.custom((t) => (
+    <div className="bg-white p-6 rounded-2xl shadow-xl text-center w-[320px]">
+      
+      <div className="flex justify-center mb-3">
+        <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+          <span className="text-white text-2xl">✓</span>
+        </div>
+      </div>
+
+      <h3 className="text-lg font-semibold">Successful!</h3>
+      <p className="text-gray-500 mb-4">
+        Your order has been confirmed
+      </p>
+
+      <button
+        onClick={() => {
+          toast.dismiss(t.id);
+          navigate("/books");
+        }}
+        className="w-full bg-pink-600 text-white py-2 rounded-lg"
+      >
+        Keep shopping
+      </button>
+    </div>
+  ));
+}}
   validateOnMount
 >
   {({ isValid, dirty }) => (
@@ -455,12 +544,22 @@ const [isShippingValid, setIsShippingValid] = useState(false);
         </div>
 
 <button
-  type="submit"
+  type="button" // ❗ بدل submit
   disabled={!isShippingValid}
-  className={`w-full h-[48px] text-[16px] font-semibold text-white rounded-xl transition
+  onClick={
+    () => {
+  if (!isShippingValid) {
+    toast.error("Please fill all required fields");
+    return;
+  }
+
+  showOverlayToast(navigate);
+}
+  }
+  className={`w-full h-[48px] text-[16px] font-semibold text-white rounded-xl
     ${
       isShippingValid
-        ? "bg-[#D9176C] hover:opacity-90 active:scale-[0.99]"
+        ? "bg-[#D9176C]"
         : "bg-[#D9176C66] cursor-not-allowed opacity-50"
     }`}
 >

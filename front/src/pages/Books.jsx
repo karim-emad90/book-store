@@ -8,7 +8,7 @@ import api from "../api";
 import BookRow from "../components/BookRow";
 import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
 import MobileFooter from "../components/MobileFooter";
-import { addToCartOnce, toggleFav, isFav } from "../utils/store";
+import { addToCartOnce, toggleFav, isFav,isInCart } from "../utils/store";
 import { CiHeart } from "react-icons/ci";
 
 
@@ -32,6 +32,8 @@ export default function Books() {
 
   const [mobileFilterOpen, setMobileFilterOpen] = useState(false);
   const [mobileCategoriesOpen, setMobileCategoriesOpen] = useState(false);
+
+  const [btnStatus,setBtnStatus] = useState(false);
 
   const navigate = useNavigate();
 
@@ -186,6 +188,8 @@ const getPageItems = (current, totalPages) => {
         : `${base}${imgUrl}`
       : richDadBook;
   };
+
+  const [cartRefresh, setCartRefresh] = useState(0);
 
   return (
     <>
@@ -383,17 +387,25 @@ const getPageItems = (current, totalPages) => {
       />
     </button>
 
-    <button
-      onClick={() =>
-        addToCartOnce({
-          ...book,
-          coverImageUrl: imgSrc,
-        })
-      }
-      className="h-11 w-11  rounded-xl bg-[#D9176C] text-white text-[15px] font-medium shadow"
-    >
-      Cart
-    </button>
+<button
+  className={`h-11 w-11 rounded-xl text-[15px] font-medium shadow ${
+    isInCart(book.documentId)
+      ? "bg-[#D9176C] text-white"
+      : "bg-white text-[#D9176C] border border-[#D9176C]"
+  }`}
+  onClick={(e) => {
+    e.stopPropagation();
+
+    addToCartOnce({
+      ...book,
+      coverImageUrl: imgSrc,
+    });
+   console.log("isInCart:", isInCart(book.id));
+    setCartRefresh((prev) => prev + 1);
+  }}
+>
+  Cart
+</button>
   </div>
 </div>
                     </div>

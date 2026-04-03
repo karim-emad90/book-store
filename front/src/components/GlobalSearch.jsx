@@ -29,9 +29,9 @@ export default function GlobalSearch({ value, onChange }) {
   }, []);
 
   return (
-    <div className="lg:hidden mt-7 w-full flex gap-[16px] justify-items-center">
-      <div className="lg:w-[239px] w-full flex h-[38px]">
-        <div className="w-[193px] relative">
+    <div className="lg:hidden mt-7 w-full flex gap-[16px] justify-items-between items-center">
+      <div className="lg:w-[239px] pl-3  w-full flex h-[38px] ">
+        <div className="w-[180px] relative">
           <input
             type="text"
             className="outline-0 pl-[16px] w-full h-full border-r-0 rounded-r-0 rounded-l-xl border border-[#22222233] bg-[#FFFFFF] text-[16px] text-black placeholder:text-[#22222233] placeholder:text-[12px]"
@@ -50,7 +50,7 @@ export default function GlobalSearch({ value, onChange }) {
         </button>
       </div>
 
-      <div className="w-[70px] flex gap-[8px] justify-items-center">
+      <div className="w-full flex gap-[8px] justify-items-center">
         <button
           onClick={() => navigate("/cart")}
           className="relative flex justify-center items-center rounded-full w-[30px] h-[30px] bg-[#D9176C]"

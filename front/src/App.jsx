@@ -1,15 +1,18 @@
 
 
 import AppRoutes from "./routes/AppRoutes";
+import { Toaster } from "react-hot-toast";
 
 export default function App() {
   return (
-    
-     <div className="w-dvw h-dvh bg-[#F5F5F5] ">
+     <>
+      <Toaster position="top-center" />
+     <div className="w-full h-dvh bg-[#F5F5F5] ">
       
        <AppRoutes/>
 
      </div>
+     </>
      
       
 

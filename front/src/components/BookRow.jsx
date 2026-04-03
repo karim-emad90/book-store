@@ -5,7 +5,7 @@ import { FaHeart } from "react-icons/fa"; // قلب filled
 import RatingStars from "../store/RatingStars";
 import { addToCart } from "../utils/store";
 import { useNavigate } from "react-router-dom";
-import {toggleFav,isFav} from "../utils/store"
+import {toggleFav,isFav,isInCart} from "../utils/store"
 
 
 export default function BookRow({ book, imgSrc }) {
@@ -15,6 +15,7 @@ export default function BookRow({ book, imgSrc }) {
   const [fav, setFav] = useState(() => isFav(bookId));
 
   const navigate = useNavigate();
+  const [cartRefresh,setCartRefresh] = useState(0);
 
   // ✅ عشان لو الهيدر/مكان تاني عمل تحديث
   useEffect(() => {
@@ -27,6 +28,8 @@ export default function BookRow({ book, imgSrc }) {
     toggleFav(bookId);       // يضيف/يشيل
     setFav(isFav(bookId));   // يغير لون القلب فورًا
   };
+
+  
 
   return (
     <div className="w-full flex gap-[24px] ">
@@ -93,10 +96,15 @@ export default function BookRow({ book, imgSrc }) {
 
             <div className="w-full flex gap-[16px]">
 <button
-  className="btn w-[32px] h-[32px] flex items-center justify-center gap-[10px] lg:w-[180px] lg:h-[48px] bg-[#D9176C] rounded-lg text-[16px] text-[#FFFFFF] font-semibold"
+  className={`btn w-[32px] h-[32px] flex items-center justify-center gap-[10px] lg:w-[180px] lg:h-[48px] rounded-lg text-[16px] font-semibold ${
+    isInCart(book.documentId)
+      ? "bg-[#D9176C] text-white"
+      : "bg-white text-[#D9176C] border border-[#D9176C]"
+  }    `}
 onClick={(e) => {
   e.stopPropagation(); // 🔥 مهم جدًا
   addToCart({ ...book, coverImageUrl: imgSrc });
+  setCartRefresh((prev) => prev + 1);
 }}
 >
   Add To Cart
