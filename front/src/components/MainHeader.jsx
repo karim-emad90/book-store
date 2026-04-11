@@ -2,9 +2,6 @@ import { NavLink, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import bookIcon from '../assets/LoginPage/book-bookmark 1.png';
 import BigLibrary from '../assets/HomPage/big-library.png';
-import { FaMicrophone } from "react-icons/fa";
-import { CiSearch } from "react-icons/ci";
-import AuthHeader from './AuthHeader';
 import { IoCartOutline } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
 import avatar from '../assets/AfterLoginPage/Avatar Image (1).png';
@@ -20,14 +17,23 @@ export default function MainHeader({ hidden, search, setSearch }) {
   const [favCount, setFavCount] = useState(getFavCount());
   const [headerHeight, setHeaderHeight] = useState(false);
   const [hideSearch, setHideSearch] = useState("");
+  const [aboutHeader,setAboutHeader] = useState(false);
 
   useEffect(() => {
     if (location.pathname === "/books" || location.pathname === "/cart" || location.pathname === `/book/${id}` || location.pathname === `/checkout`) {
       setHideSearch("hidden");
       setHeaderHeight(true);
-    } else {
+    }
+    else if(location.pathname === "/about"){
+      setAboutHeader(true);
       setHideSearch("");
       setHeaderHeight(false);
+
+    }
+     else {
+      setHideSearch("");
+      setHeaderHeight(false);
+      setAboutHeader(false);
     }
   }, [location.pathname]);
 
@@ -47,6 +53,7 @@ export default function MainHeader({ hidden, search, setSearch }) {
 
   return (
     <>
+    
       {/* 🔥 Desktop Header */}
       <div className={`${headerHeight ? 'lg:h-[92px]' : 'lg:h-[804px]'} hidden lg:block w-full relative`}>
         
@@ -82,10 +89,20 @@ export default function MainHeader({ hidden, search, setSearch }) {
         </div>
 
         <div
-          className="absolute inset-0 bg-cover"
+          className='absolute inset-0 bg-cover'
           style={{ backgroundImage: `url(${BigLibrary})` }}
         />
       </div>
+      {
+        aboutHeader && (
+          <div className="absolute inset-0 z-10 w-full flex flex-col gap-[16px] justify-center items-center bg-black/30 ">
+            <h1 className='flex justify-center text-[48px] text-[#FFFFFF] font-bold'>About Bookshop</h1>
+           <p className="w-[652px] text-[24px] text-[#FFFFFF] mx-auto leading-relaxed text-center">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris et ultricies est. Aliquam in justo varius, sagittis neque ut, malesuada leo.
+</p>
+          </div>
+        )
+      }
 
       {/* 🔥 Mobile Header */}
       {/* <div className="lg:hidden fixed top-0 left-0 w-full h-[70px] bg-white flex items-center justify-between px-4 z-50 shadow">
