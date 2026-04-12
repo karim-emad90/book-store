@@ -121,7 +121,7 @@ export default function ProductDetails() {
             <div className='w-[241px] flex flex-col gap-[16px]'>
 
               <div className="flex gap-[8px]">
-                <RatingStars/>
+                <RatingStars rating={book.rating} />
                 <p className='text-[16px] text-[#00000080]'>
                   ({book.reviewsCount || 0} Review)
                 </p>

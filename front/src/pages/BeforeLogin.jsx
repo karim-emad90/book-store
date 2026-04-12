@@ -376,7 +376,7 @@ useEffect(() => {
                   <div className='w-full flex flex-col gap-[4px]'>
                       <div className='w-full items-center flex gap-[8px]'>
                         <div className='w-[96px]'>
-                          <RatingStars/>
+                          <RatingStars rating={book.rating} />
                         </div>
                         <p className='text-[12px] font-semibold text-[#ffffff80]'>({book.countReview} Review)</p>
                       </div>

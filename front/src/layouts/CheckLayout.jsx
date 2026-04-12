@@ -10,6 +10,7 @@ export default function CheckLayout() {
         <MainHeader hidden={'hidden'}
                     search={search}
                     setSearch={setSearch}
+                    mobileSimple={true}
         />
         <main className="min-h-screen"
         >

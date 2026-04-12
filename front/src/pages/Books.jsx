@@ -10,6 +10,7 @@ import { Navigate, useNavigate, useOutletContext } from "react-router-dom";
 import MobileFooter from "../components/MobileFooter";
 import { addToCartOnce, toggleFav, isFav,isInCart } from "../utils/store";
 import { CiHeart } from "react-icons/ci";
+import RatingStars from "../store/RatingStars";
 
 
 export default function Books() {
@@ -334,7 +335,7 @@ const getPageItems = (current, totalPages) => {
                     </p>
 
                     <div className="mt-3 flex items-center gap-1 text-[#D9D9D9] text-lg">
-                      ★ ★ ★ ★ ★
+                      <RatingStars rating={book.rating} />
                       <span className="text-[12px] text-[#22222280] ml-1">
                         ({book.reviewsCount || 0} Review)
                       </span>

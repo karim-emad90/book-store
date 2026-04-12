@@ -65,7 +65,7 @@ export default function BookRow({ book, imgSrc }) {
             <div className="w-full h-[35px] lg:h-[43px] flex flex-col gap-[8px]">
               <div className="w-full flex gap-[8px]">
                 <div className="w-[116px]">
-                  <RatingStars />
+                  <RatingStars rating={book.rating} />
                 </div>
                 <p className="lg:text-[12px] text-[10px] font-semibold text-[#222222]">
                   ({book.reviewsCount} Review)

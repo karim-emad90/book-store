@@ -11,6 +11,7 @@ export default function ProductLayout() {
         <MainHeader hidden={'hidden'}
                     search={search}
                     setSearch={setSearch}
+                    mobileSimple={true}
         />
         <main className="min-h-screen"
         >
@@ -18,7 +19,7 @@ export default function ProductLayout() {
         <Outlet context={{ search, setSearch }} />
 
         </main>
-        <MainFooter></MainFooter>
+        <MainFooter ></MainFooter>
     </div>
   )
 }

@@ -6,7 +6,7 @@ import MainHeader from "../components/MainHeader";
 export default function AboutLayout() {
   return (
     <div className="flex flex-col bg-[#F5F5F5] ">
-        <MainHeader hidden={'hidden'}/>
+        <MainHeader hidden={'hidden'} mobileSimple={true}/>
         <main className="min-h-screen">
             
         <Outlet/>
