@@ -681,6 +681,9 @@ const getPageItems = (current, totalPages) => {
               console.log("API_URL:", API_URL);
 console.log("book image:", getBookImage(book));
 console.log("coverImageUrl raw:", book?.coverImageUrl);
+console.log("BOOK FULL:", book);
+console.log("coverImageUrl:", book?.coverImageUrl);
+console.log("attributes:", book?.attributes);
               const imgSrc = getBookImage(book);
               return (
                 <BookRow key={book.documentId} book={book} imgSrc={imgSrc}
