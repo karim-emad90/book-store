@@ -7,9 +7,14 @@ export function getBookImage(book) {
 
   const fileName = book?.coverImageUrl;
 
-  if (!fileName) return defaultBookImage;
+  // 👇 مهم جدًا
+  if (!fileName || typeof fileName !== "string") {
+    return defaultBookImage;
+  }
 
+  // 👇 لو URL كامل
   if (fileName.startsWith("http")) return fileName;
 
+  // 👇 ده المسار الصح
   return `${API_URL}/category-images/${fileName}`;
 }

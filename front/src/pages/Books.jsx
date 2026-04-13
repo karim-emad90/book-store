@@ -678,14 +678,8 @@ const getPageItems = (current, totalPages) => {
           {/* Desktop books */}
           <div className="w-[881px] flex flex-col gap-[60px] bg-[#F5F5F5]">
             {books.map((book) => {
-              console.log("BOOK:", book);
-              console.log("API_URL:", API_URL);
-console.log("book image:", getBookImage(book));
-console.log("coverImageUrl raw:", book?.coverImageUrl);
-console.log("BOOK FULL:", book);
-console.log("coverImageUrl:", book?.coverImageUrl);
-console.log("attributes:", book?.attributes);
-console.log("coverImageUrl raw:", book?.coverImageUrl);
+               console.log("coverImageUrl:", book.coverImageUrl);
+  console.log("image url:", getBookImage(book));
               const imgSrc = getBookImage(book);
               return (
                 <BookRow key={book.documentId} book={book} imgSrc={imgSrc}
