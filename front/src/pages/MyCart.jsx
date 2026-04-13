@@ -310,7 +310,7 @@ useEffect(() => {
               return(
                         <div key={item.documentId} className="w-full flex gap-[25px] items-center px-[60px] p-[24px] bg-[#FFFFFF] relative">
             <div className="w-[535px] flex gap-[24px]">
-                <img src={item.image || getBookImage(item)} className='h-full w-[173px]' alt={item.title} />
+                <img src={getBookImage(item)} className='h-full w-[173px]' alt={item.title} />
 
                 <div className=' w-full flex flex-col gap-[35px]'>
                     <div className='w-[251px] flex flex-col gap-[8px]'>
