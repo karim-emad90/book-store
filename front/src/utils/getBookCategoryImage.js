@@ -1,17 +1,17 @@
-import defaultBookImage from "../assets/category/default.jpg";
+
 
 const API_URL = import.meta.env.VITE_API_URL?.replace(/\/$/, "");
 
-export function getBookImage(book) {
-  const fileName =
-    book?.coverImageUrl ||
-    book?.attributes?.coverImageUrl;
+const getBookImage = (book) => {
+  const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
+  const fileName = book?.coverImageUrl;
 
   if (!fileName || typeof fileName !== "string") {
-    return defaultBookImage;
+    return richDadBook;
   }
 
   if (fileName.startsWith("http")) return fileName;
 
-  return `${API_URL}/category-images/${fileName}`;
-}
+  return `${base}/category-images/${fileName}`;
+};

@@ -398,8 +398,7 @@ const getPageItems = (current, totalPages) => {
     e.stopPropagation();
 
     addToCartOnce({
-      ...book,
-      coverImageUrl: imgSrc,
+      ...book
     });
    console.log("isInCart:", isInCart(book.id));
     setCartRefresh((prev) => prev + 1);
