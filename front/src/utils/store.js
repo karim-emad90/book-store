@@ -1,12 +1,9 @@
-
-
 const CART_KEY = "bookshop_cart";
 const FAV_KEY = "bookshop_fav";
 
 function toAbsoluteUrl(rawUrl) {
   if (!rawUrl) return null;
 
-  // ✅ لو object خد منه url
   if (typeof rawUrl === "object") {
     rawUrl = rawUrl.url;
   }
@@ -19,52 +16,31 @@ function toAbsoluteUrl(rawUrl) {
   return base ? `${base}${rawUrl}` : rawUrl;
 }
 
-export function addToCart(book) {
-  const cart = getCart();
-  const id = book?.documentId ?? book?.id;
-
-  // ✅ التقط الصورة من أي شكل محتمل
-  const rawUrl =
-    book?.coverImageUrl ||
-    book?.coverImage?.url ||                 // ✅ ده شكل بياناتك
-    book?.coverImageUrl?.formats?.thumbnail?.url || // احتياطي
-    null;
-
-  const image = toAbsoluteUrl(rawUrl);
-
-  const idx = cart.findIndex((item) => item.id === id);
-
-  if (idx === -1) {
-    cart.push({
-      id,
-      title: book?.title,
-      author: book?.author,
-      description: book?.description,
-      discountCode: book?.discountCode,
-      isbn13: book?.isbn13,
-      price: Number(book?.price ?? 0),
-      image, // ✅ هيتخزن URL هنا
-      qty: 1,
-    });
-  } else {
-    cart[idx] = { ...cart[idx], qty: cart[idx].qty + 1 };
+function getBookId(bookOrId) {
+  if (typeof bookOrId === "object" && bookOrId !== null) {
+    return String(bookOrId.documentId ?? bookOrId.id ?? "");
   }
 
-  saveCart(cart);
+  return String(bookOrId ?? "");
 }
 
-
-
 function normalizeBook(book) {
+  const rawUrl =
+    book?.coverImageUrl ||
+    book?.coverImage?.url ||
+    book?.coverImage?.formats?.thumbnail?.url ||
+    book?.coverImageUrl?.formats?.thumbnail?.url ||
+    null;
+
   return {
-    id: book.documentId ?? book.id,
-    title: book.title ?? "Untitled",
-    author: book.author ?? "",
-    description: book.description ?? "",
-    discountCode: book.discountCode ?? "",
-    isbn13: book.isbn13 ?? "",
-    price: Number(book.price ?? 0),
-    image: book.coverImageUrl ?? null,
+    id: getBookId(book),
+    title: book?.title ?? "Untitled",
+    author: book?.author ?? "",
+    description: book?.description ?? "",
+    discountCode: book?.discountCode ?? "",
+    isbn13: book?.isbn13 ?? "",
+    price: Number(book?.price ?? 0),
+    image: toAbsoluteUrl(rawUrl),
   };
 }
 
@@ -81,28 +57,39 @@ export function getCart() {
 }
 
 export function saveCart(cart) {
-  console.log("✅ saveCart called. cart =", cart);
   localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  console.log("✅ localStorage now =", localStorage.getItem(CART_KEY));
   notifyStorageUpdate();
+}
+
+export function addToCart(book) {
+  const cart = getCart();
+  const normalizedBook = normalizeBook(book);
+  const id = normalizedBook.id;
+
+  const idx = cart.findIndex((item) => String(item.id) === String(id));
+
+  if (idx === -1) {
+    cart.push({
+      ...normalizedBook,
+      qty: 1,
+    });
+  } else {
+    cart[idx] = { ...cart[idx], qty: cart[idx].qty + 1 };
+  }
+
+  saveCart(cart);
 }
 
 export function addToCartOnce(book) {
   const cart = getCart();
+  const normalizedBook = normalizeBook(book);
+  const id = normalizedBook.id;
 
-  const id = book?.documentId ?? book?.id;
-  const exists = cart.find((item) => item.id === id);
+  const exists = cart.find((item) => String(item.id) === String(id));
 
   if (!exists) {
     cart.push({
-      id,
-      title: book?.title,
-      author: book?.author,
-      description: book?.description,
-      discountCode: book?.discountCode,
-      isbn13: book?.isbn13,
-      price: Number(book?.price ?? 0),
-      image: book?.coverImageUrl ?? null,
+      ...normalizedBook,
       qty: 1,
     });
 
@@ -110,17 +97,21 @@ export function addToCartOnce(book) {
   }
 }
 
-
-
 export function removeFromCart(id) {
-  const cart = getCart().filter((item) => item.id !== id);
+  const normalizedId = String(id);
+  const cart = getCart().filter((item) => String(item.id) !== normalizedId);
   saveCart(cart);
 }
 
 export function changeCartQty(id, qty) {
+  const normalizedId = String(id);
+
   const cart = getCart().map((item) =>
-    item.id === id ? { ...item, qty: Math.max(1, qty) } : item
+    String(item.id) === normalizedId
+      ? { ...item, qty: Math.max(1, qty) }
+      : item
   );
+
   saveCart(cart);
 }
 
@@ -131,16 +122,6 @@ export function clearCart() {
 export function getCartCount() {
   const cart = getCart();
   return cart.length;
-}
-
-// لو عندك fav functions موجودة سيبها زي ما هي
-export function getFavCount() {
-  try {
-    const fav = JSON.parse(localStorage.getItem(FAV_KEY)) || [];
-    return fav.length;
-  } catch {
-    return 0;
-  }
 }
 
 export function getFav() {
@@ -156,31 +137,37 @@ export function saveFav(fav) {
   notifyStorageUpdate();
 }
 
-export function toggleFav(id) {
+export function getFavCount() {
+  return getFav().length;
+}
+
+export function toggleFav(bookOrId) {
+  const id = getBookId(bookOrId);
   const fav = getFav();
 
-  const exists = fav.includes(id);
+  const exists = fav.some((item) => String(item) === id);
 
   let updated;
 
   if (exists) {
-    updated = fav.filter((item) => item !== id);
+    updated = fav.filter((item) => String(item) !== id);
   } else {
     updated = [...fav, id];
   }
 
   saveFav(updated);
+  return updated;
 }
 
-export function isFav(id) {
+export function isFav(bookOrId) {
+  const id = getBookId(bookOrId);
   const fav = getFav();
-  return fav.includes(id);
+  return fav.some((item) => String(item) === id);
 }
 
 export const isInCart = (id) => {
-  const cart = JSON.parse(localStorage.getItem("bookshop_cart")) || [];
+  const normalizedId = String(id);
+  const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
 
-  return cart.some(
-    (item) => String(item.id) === String(id)
-  );
+  return cart.some((item) => String(item.id) === normalizedId);
 };

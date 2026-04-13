@@ -1,42 +1,42 @@
 import { useEffect, useState } from "react";
 import { IoCartOutline } from "react-icons/io5";
-import { FaRegHeart } from "react-icons/fa";
-import { FaHeart } from "react-icons/fa"; // قلب filled
+import { FaRegHeart, FaHeart } from "react-icons/fa";
 import RatingStars from "../store/RatingStars";
-import { addToCart } from "../utils/store";
+import { addToCart, toggleFav, isFav, isInCart } from "../utils/store";
 import { useNavigate } from "react-router-dom";
-import {toggleFav,isFav,isInCart} from "../utils/store"
-
 
 export default function BookRow({ book, imgSrc }) {
-  const bookId = book.documentId;
-
-  // ✅ Hook هنا عادي لأنه ثابت لكل كومبوننت
-  const [fav, setFav] = useState(() => isFav(bookId));
-
+  const bookId = book.documentId ?? book.id;
   const navigate = useNavigate();
-  const [cartRefresh,setCartRefresh] = useState(0);
 
-  // ✅ عشان لو الهيدر/مكان تاني عمل تحديث
+  const [fav, setFav] = useState(() => isFav(bookId));
+  const [cartRefresh, setCartRefresh] = useState(0);
+
   useEffect(() => {
-    const update = () => setFav(isFav(bookId));
+    const update = () => {
+      setFav(isFav(bookId));
+    };
+
     window.addEventListener("storage-update", update);
-    return () => window.removeEventListener("storage-update", update);
+
+    return () => {
+      window.removeEventListener("storage-update", update);
+    };
   }, [bookId]);
 
-  const onToggleFav = () => {
-    toggleFav(bookId);       // يضيف/يشيل
-    setFav(isFav(bookId));   // يغير لون القلب فورًا
+  const onToggleFav = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    toggleFav(bookId);
+    setFav(isFav(bookId));
   };
 
-  
-
   return (
-    <div className="w-full flex gap-[24px] ">
+    <div className="w-full flex gap-[24px]">
       <img
-        
-           onTouchEnd={() => navigate(`/book/${book.documentId}`)}
-  onClick={() => navigate(`/book/${book.documentId}`)}
+        onTouchEnd={() => navigate(`/book/${book.documentId}`)}
+        onClick={() => navigate(`/book/${book.documentId}`)}
         src={imgSrc}
         alt={book.title}
         className="cursor-pointer w-[173px] h-[253px] object-cover rounded-md bg-white relative z-10"
@@ -95,30 +95,26 @@ export default function BookRow({ book, imgSrc }) {
             </p>
 
             <div className="w-full flex gap-[16px]">
-<button
-  className={`btn w-[32px] h-[32px] flex items-center justify-center gap-[10px] lg:w-[180px] lg:h-[48px] rounded-lg text-[16px] font-semibold ${
-    isInCart(book.documentId)
-      ? "bg-[#D9176C] text-white"
-      : "bg-white text-[#D9176C] border border-[#D9176C]"
-  }    `}
-onClick={(e) => {
-  e.stopPropagation(); // 🔥 مهم جدًا
-  addToCart({ ...book, coverImageUrl: imgSrc });
-  setCartRefresh((prev) => prev + 1);
-}}
->
-  Add To Cart
-  <IoCartOutline className="text-lg" />
-</button>
+              <button
+                className={`btn w-[32px] h-[32px] flex items-center justify-center gap-[10px] lg:w-[180px] lg:h-[48px] rounded-lg text-[16px] font-semibold ${
+                  isInCart(bookId)
+                    ? "bg-[#D9176C] text-white"
+                    : "bg-white text-[#D9176C] border border-[#D9176C]"
+                }`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  addToCart({ ...book, coverImageUrl: imgSrc });
+                  setCartRefresh((prev) => prev + 1);
+                }}
+              >
+                Add To Cart
+                <IoCartOutline className="text-lg" />
+              </button>
 
-              {/* ✅ القلب بيتلون */}
               <button
                 className="btn w-[32px] h-[32px] flex items-center justify-center lg:w-[48px] lg:h-[48px] bg-[#FFFFFF] rounded-lg border border-[#D9176C]"
-               onClick={(e) => {
-  e.stopPropagation(); // 🔥 مهم
-  toggleFav(id);
-  setFavState(prev => !prev);
-}}
+                onClick={onToggleFav}
               >
                 {fav ? (
                   <FaHeart className="text-lg text-[#D9176C]" />
