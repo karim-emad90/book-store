@@ -70,9 +70,10 @@ const fetchCategories = async () => {
 
   const fetchBooks = async () => {
   try {
-    const params = {
-      pagination: { page, pageSize },
-    };
+   const params = {
+  pagination: { page, pageSize },
+  fields: ["*"],
+};
 
     if (sort) params.sort = sort;
 
