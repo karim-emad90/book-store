@@ -125,6 +125,7 @@ useEffect(() => {
       <div className="lg:hidden w-full bg-[#F5F5F5] px-4 pt-4 pb-24 flex flex-col gap-4">
 
   {cartItems.map((item) => (
+    
     <div
       key={item.id}
       className="bg-white rounded-2xl p-3 shadow-sm border border-[#22222210] relative"
@@ -307,6 +308,7 @@ useEffect(() => {
             cartItems.map((item) => {
 
   console.log("image-url", item.coverImageUrl);
+  console.log("mobile cart item:", item);
               return(
                         <div key={item.documentId} className="w-full flex gap-[25px] items-center px-[60px] p-[24px] bg-[#FFFFFF] relative">
             <div className="w-[535px] flex gap-[24px]">
