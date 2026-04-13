@@ -14,6 +14,7 @@ import api from "../api";
 import { addToCart, toggleFav, isFav } from "../utils/store";
 import { FaHeart, FaRegHeart } from 'react-icons/fa'
 import MobileFooter from '../components/MobileFooter'
+import { getBookImage } from "../utils/getBookCategoryImage";
 
 export default function ProductDetails() {
   const {id} = useParams();
@@ -60,7 +61,7 @@ export default function ProductDetails() {
 
         {/* IMAGE */}
         <img 
-          src={imageUrl} 
+          src={getBookImage(book)}
           className='lg:w-[312px] lg:h-[456px] w-full h-[350px]  object-cover
                        '
           alt=""

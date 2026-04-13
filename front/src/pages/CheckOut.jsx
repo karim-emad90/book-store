@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import { ErrorMessage } from "formik";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
+import { getBookImage } from "../utils/getBookCategoryImage";
 
 
 export const checkoutSchema = Yup.object({
@@ -421,7 +422,11 @@ const showOverlayToast = () => {
           {cartItems.map((item, index) => (
             <div key={index} className="flex flex-col sm:flex-row gap-[16px] sm:gap-[24px]">
 
-              <img src={item.image} className="w-[90px] h-[130px] sm:w-[111px] sm:h-[160px] object-cover mx-auto sm:mx-0" />
+              <img
+  src={item.image || getBookImage(item)}
+  alt={item.title || "Book image"}
+  className="w-[90px] h-[130px] sm:w-[111px] sm:h-[160px] object-cover mx-auto sm:mx-0"
+/>
 
               <div className="flex flex-col gap-[12px] sm:gap-[15px] w-full">
 

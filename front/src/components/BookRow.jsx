@@ -4,6 +4,7 @@ import { FaRegHeart, FaHeart } from "react-icons/fa";
 import RatingStars from "../store/RatingStars";
 import { addToCart, toggleFav, isFav, isInCart } from "../utils/store";
 import { useNavigate } from "react-router-dom";
+import { getBookImage } from "../utils/getBookCategoryImage";
 
 export default function BookRow({ book, imgSrc }) {
   const bookId = book.documentId ?? book.id;
@@ -37,8 +38,7 @@ export default function BookRow({ book, imgSrc }) {
       <img
         onTouchEnd={() => navigate(`/book/${book.documentId}`)}
         onClick={() => navigate(`/book/${book.documentId}`)}
-        src={imgSrc}
-        alt={book.title}
+        src={getBookImage(book)} alt={book.title}
         className="cursor-pointer w-[173px] h-[253px] object-cover rounded-md bg-white relative z-10"
       />
 
@@ -96,21 +96,21 @@ export default function BookRow({ book, imgSrc }) {
 
             <div className="w-full flex gap-[16px]">
               <button
-                className={`btn w-[32px] h-[32px] flex items-center justify-center gap-[10px] lg:w-[180px] lg:h-[48px] rounded-lg text-[16px] font-semibold ${
-                  isInCart(bookId)
-                    ? "bg-[#D9176C] text-white"
-                    : "bg-white text-[#D9176C] border border-[#D9176C]"
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  addToCart({ ...book, coverImageUrl: imgSrc });
-                  setCartRefresh((prev) => prev + 1);
-                }}
-              >
-                Add To Cart
-                <IoCartOutline className="text-lg" />
-              </button>
+  className={`btn w-[32px] h-[32px] flex items-center justify-center gap-[10px] lg:w-[180px] lg:h-[48px] rounded-lg text-[16px] font-semibold ${
+    isInCart(bookId)
+      ? "bg-[#D9176C] text-white"
+      : "bg-white text-[#D9176C] border border-[#D9176C]"
+  }`}
+  onClick={(e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart({ ...book, image: getBookImage(book) });
+    setCartRefresh((prev) => prev + 1);
+  }}
+>
+  Add To Cart
+  <IoCartOutline className="text-lg" />
+</button>
 
               <button
                 className="btn w-[32px] h-[32px] flex items-center justify-center lg:w-[48px] lg:h-[48px] bg-[#FFFFFF] rounded-lg border border-[#D9176C]"

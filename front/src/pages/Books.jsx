@@ -317,12 +317,12 @@ const getPageItems = (current, totalPages) => {
                 
               >
                 <div className="flex gap-3">
-                  <img
-                    src={imgSrc}
-                    alt={book.title}
-                    onTouchEnd={() => navigate(`/book/${book.documentId}`)}
-                    className="w-[105px] h-min-dvh rounded-xl object-cover bg-[#D9F5FF]"
-                  />
+                 <img
+  src={getBookImage(book)}
+  alt={book.title || "Book image"}
+  onTouchEnd={() => navigate(`/book/${book.documentId}`)}
+  className="w-[105px] h-min-dvh rounded-xl object-cover bg-[#D9F5FF]"
+/>
 
                   <div className="flex-1 min-w-0 flex flex-col">
                     <h3 className="text-[18px] font-semibold text-[#222222] truncate">
@@ -678,6 +678,7 @@ const getPageItems = (current, totalPages) => {
           {/* Desktop books */}
           <div className="w-[881px] flex flex-col gap-[60px] bg-[#F5F5F5]">
             {books.map((book) => {
+              console.log("BOOK:", book);
               const imgSrc = getBookImage(book);
               return (
                 <BookRow key={book.documentId} book={book} imgSrc={imgSrc}

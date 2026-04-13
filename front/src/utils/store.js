@@ -26,10 +26,15 @@ function getBookId(bookOrId) {
 
 function normalizeBook(book) {
   const rawUrl =
+    book?.image ||
     book?.coverImageUrl ||
     book?.coverImage?.url ||
     book?.coverImage?.formats?.thumbnail?.url ||
-    book?.coverImageUrl?.formats?.thumbnail?.url ||
+    book?.cover?.url ||
+    book?.cover?.formats?.medium?.url ||
+    book?.cover?.formats?.small?.url ||
+    book?.cover?.formats?.thumbnail?.url ||
+    book?.image?.url ||
     null;
 
   return {

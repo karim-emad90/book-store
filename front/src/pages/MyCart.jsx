@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from "react";
 import shippingIcon from "../assets/cart/shipping-fast 1.png";
 import trashIcon from "../assets/cart/trash (1) 1.png";
 import ticket from "../assets/cart/ticket (2) 1.png";
+import { getBookImage } from "../utils/getBookCategoryImage";
 
 import {
   getCart,
@@ -138,7 +139,7 @@ useEffect(() => {
 
       <div className="flex gap-3">
         <img
-          src={item.image}
+          src={item.image || getBookImage(item.book)} alt={item.title}
           className="w-[90px] h-[120px] object-cover rounded-xl"
         />
 
@@ -309,7 +310,7 @@ useEffect(() => {
               return(
                         <div key={item.documentId} className="w-full flex gap-[25px] items-center px-[60px] p-[24px] bg-[#FFFFFF] relative">
             <div className="w-[535px] flex gap-[24px]">
-                <img src={item.image} className='h-full w-[173px]' alt={item.title} />
+                <img src={item.image || getBookImage(item)} className='h-full w-[173px]' alt={item.title} />
 
                 <div className=' w-full flex flex-col gap-[35px]'>
                     <div className='w-[251px] flex flex-col gap-[8px]'>
