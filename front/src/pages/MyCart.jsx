@@ -139,7 +139,7 @@ useEffect(() => {
 
       <div className="flex gap-3">
         <img
-          src={item.image || getBookImage(item.book)} alt={item.title}
+          src={getBookImage(item)}
           className="w-[90px] h-[120px] object-cover rounded-xl"
         />
 
