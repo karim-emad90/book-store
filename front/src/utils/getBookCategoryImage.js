@@ -9,7 +9,7 @@ export function getBookImage(book) {
   console.log("CART IMAGE:", fileName); // 👈 مؤقت
 
   if (!fileName || typeof fileName !== "string") {
-    return richDadBook;
+    return defaultBookImage;
   }
 
   if (fileName.startsWith("http")) return fileName;
