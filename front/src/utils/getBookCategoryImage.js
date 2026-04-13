@@ -2,7 +2,7 @@
 
 const API_URL = import.meta.env.VITE_API_URL?.replace(/\/$/, "");
 
-const getBookImage = (book) => {
+export const getBookImage = (book) => {
   const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
   const fileName = book?.coverImageUrl;
