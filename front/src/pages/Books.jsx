@@ -685,6 +685,7 @@ console.log("coverImageUrl raw:", book?.coverImageUrl);
 console.log("BOOK FULL:", book);
 console.log("coverImageUrl:", book?.coverImageUrl);
 console.log("attributes:", book?.attributes);
+console.log("coverImageUrl raw:", book?.coverImageUrl);
               const imgSrc = getBookImage(book);
               return (
                 <BookRow key={book.documentId} book={book} imgSrc={imgSrc}
