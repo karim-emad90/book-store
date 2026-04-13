@@ -9,9 +9,7 @@ export function getBookImage(book) {
 
   if (!fileName) return defaultBookImage;
 
-  // لو بالفعل URL كامل
   if (fileName.startsWith("http")) return fileName;
 
-  // نبني الرابط الصح
   return `${API_URL}/category-images/${fileName}`;
 }

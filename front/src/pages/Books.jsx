@@ -54,66 +54,66 @@ export default function Books() {
     setPage(1);
   };
 
-  const fetchCategories = async () => {
-    try {
-      const res = await api.get(
-        "/api/categories?populate[books][fields][0]=documentId"
-      );
-      setCategories(res.data.data);
-    } catch (err) {
-      console.log(err.response?.data || err.message);
-    }
-  };
+const fetchCategories = async () => {
+  try {
+    const res = await api.get(
+      "/api/categories?populate[books][fields][0]=documentId"
+    );
+    setCategories(Array.isArray(res?.data?.data) ? res.data.data : []);
+  } catch (err) {
+    console.log(err.response?.data || err.message);
+    setCategories([]);
+  }
+};
 
   const fetchBooks = async () => {
-    try {
-      const params = {
-        status: "draft",
-        populate: { coverImageUrl: true },
-        pagination: { page, pageSize },
+  try {
+    const params = {
+      pagination: { page, pageSize },
+    };
+
+    if (sort) params.sort = sort;
+
+    const hasCategory = selectedCategoryIds.length > 0;
+    const hasSearch = debouncedSearch.trim() !== "";
+
+    if (hasCategory && hasSearch) {
+      params.filters = {
+        $and: [
+          { categories: { documentId: { $in: selectedCategoryIds } } },
+          {
+            $or: [
+              { title: { $containsi: debouncedSearch } },
+              { author: { $containsi: debouncedSearch } },
+            ],
+          },
+        ],
       };
-
-      if (sort) params.sort = sort;
-
-      const hasCategory = selectedCategoryIds.length > 0;
-      const hasSearch = debouncedSearch.trim() !== "";
-
-      if (hasCategory && hasSearch) {
-        params.filters = {
-          $and: [
-            { categories: { documentId: { $in: selectedCategoryIds } } },
-            {
-              $or: [
-                { title: { $containsi: debouncedSearch } },
-                { author: { $containsi: debouncedSearch } },
-              ],
-            },
-          ],
-        };
-      } else if (hasCategory) {
-        params.filters = {
-          categories: { documentId: { $in: selectedCategoryIds } },
-        };
-      } else if (hasSearch) {
-        params.filters = {
-          $or: [
-            { title: { $containsi: debouncedSearch } },
-            { author: { $containsi: debouncedSearch } },
-          ],
-        };
-      }
-
-      const res = await api.get("/api/books", { params });
-
-      setBooks(res.data.data);
-
-      const meta = res.data.meta?.pagination;
-      setTotal(meta?.total ?? 0);
-      setPageCount(meta?.pageCount ?? 1);
-    } catch (err) {
-      console.log(err.response?.data || err.message);
+    } else if (hasCategory) {
+      params.filters = {
+        categories: { documentId: { $in: selectedCategoryIds } },
+      };
+    } else if (hasSearch) {
+      params.filters = {
+        $or: [
+          { title: { $containsi: debouncedSearch } },
+          { author: { $containsi: debouncedSearch } },
+        ],
+      };
     }
-  };
+
+    const res = await api.get("/api/books", { params });
+
+    setBooks(Array.isArray(res?.data?.data) ? res.data.data : []);
+
+    const meta = res.data.meta?.pagination;
+    setTotal(meta?.total ?? 0);
+    setPageCount(meta?.pageCount ?? 1);
+  } catch (err) {
+    console.log(err.response?.data || err.message);
+    setBooks([]);
+  }
+};
 
   const handleToggleFav = (book) => {
   const id = book?.documentId ?? book?.id;
@@ -178,17 +178,14 @@ const getPageItems = (current, totalPages) => {
   const totalLabel = total > 5000 ? "5000+" : total.toLocaleString();
 
   const getBookImage = (book) => {
-    const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
-    const imgUrl =
-      book?.coverImageUrl?.url ||
-      book?.coverImageUrl?.data?.attributes?.url;
+  const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+  const fileName = book?.coverImageUrl || book?.attributes?.coverImageUrl;
 
-    return imgUrl
-      ? imgUrl.startsWith("http")
-        ? imgUrl
-        : `${base}${imgUrl}`
-      : richDadBook;
-  };
+  if (!fileName || typeof fileName !== "string") return richDadBook;
+  if (fileName.startsWith("http")) return fileName;
+
+  return `${base}/category-images/${fileName}`;
+};
 
   const [cartRefresh, setCartRefresh] = useState(0);
 
@@ -198,7 +195,7 @@ const getPageItems = (current, totalPages) => {
       <div className="lg:hidden w-full bg-[#F5F5F5] px-4 pt-4 pb-8 flex flex-col gap-4">
         {/* Category Chips */}
         <div className="flex gap-2 flex-wrap">
-          {categories.slice(0, 7).map((cat) => {
+          {(categories || []).slice(0, 7).map((cat) =>  {
             const active = selectedCategoryIds.includes(cat.documentId);
 
             return (
@@ -655,7 +652,7 @@ const getPageItems = (current, totalPages) => {
 
             {/* Desktop category buttons */}
             <div className="w-full flex gap-[12px] flex-wrap">
-              {categories.slice(0, 8).map((cat) => {
+              {(categories || []).slice(0, 8).map((cat) => {
                 const active = selectedCategoryIds.includes(cat.documentId);
 
                 return (
@@ -679,6 +676,9 @@ const getPageItems = (current, totalPages) => {
           <div className="w-[881px] flex flex-col gap-[60px] bg-[#F5F5F5]">
             {books.map((book) => {
               console.log("BOOK:", book);
+              console.log("API_URL:", API_URL);
+console.log("book image:", getBookImage(book));
+console.log("coverImageUrl raw:", book?.coverImageUrl);
               const imgSrc = getBookImage(book);
               return (
                 <BookRow key={book.documentId} book={book} imgSrc={imgSrc}
