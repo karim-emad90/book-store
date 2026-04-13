@@ -1,4 +1,4 @@
-import richDadBook from '../assets/LoginPage/richdadbook.png'
+
 import { useEffect, useMemo, useState } from "react";
 import shippingIcon from "../assets/cart/shipping-fast 1.png";
 import trashIcon from "../assets/cart/trash (1) 1.png";
