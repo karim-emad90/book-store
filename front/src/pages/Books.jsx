@@ -70,9 +70,10 @@ const fetchCategories = async () => {
 
   const fetchBooks = async () => {
   try {
-   const params = {
+  const params = {
   pagination: { page, pageSize },
   fields: ["*"],
+  populate: "*", // 👈 مهم
 };
 
     if (sort) params.sort = sort;
@@ -180,11 +181,18 @@ const getPageItems = (current, totalPages) => {
   const endItem = Math.min(page * pageSize, total);
   const totalLabel = total > 5000 ? "5000+" : total.toLocaleString();
 
-  const getBookImage = (book) => {
+const getBookImage = (book) => {
   const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
-  const fileName = book?.coverImageUrl || book?.attributes?.coverImageUrl;
 
-  if (!fileName || typeof fileName !== "string") return richDadBook;
+  const fileName =
+    book?.coverImageUrl ||
+    book?.attributes?.coverImageUrl ||
+    book?.data?.coverImageUrl;
+
+  if (!fileName || typeof fileName !== "string") {
+    return richDadBook;
+  }
+
   if (fileName.startsWith("http")) return fileName;
 
   return `${base}/category-images/${fileName}`;
