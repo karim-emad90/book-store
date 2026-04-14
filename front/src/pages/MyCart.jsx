@@ -139,12 +139,13 @@ useEffect(() => {
       </button>
 
       <div className="flex gap-3">
-       <img
+     <img
   src={item.image || getBookImage(item)}
   alt={item.title}
   className="w-[90px] h-[120px] object-cover rounded-xl"
   onError={(e) => {
-    e.currentTarget.src = getBookImage(item);
+    console.log("MOBILE IMG FAILED:", item);
+    console.log("src was:", e.currentTarget.src);
   }}
 />
 
