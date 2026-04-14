@@ -139,10 +139,14 @@ useEffect(() => {
       </button>
 
       <div className="flex gap-3">
-        <img
-          src={getBookImage(item)}
-          className="w-[90px] h-[120px] object-cover rounded-xl"
-        />
+       <img
+  src={item.image || getBookImage(item)}
+  alt={item.title}
+  className="w-[90px] h-[120px] object-cover rounded-xl"
+  onError={(e) => {
+    e.currentTarget.src = getBookImage(item);
+  }}
+/>
 
         <div className="flex-1 flex flex-col">
           <h3 className="text-[16px] font-semibold text-[#222222] line-clamp-1">
