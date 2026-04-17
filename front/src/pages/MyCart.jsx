@@ -108,6 +108,8 @@ useEffect(() => {
     (item) => (item.discountCode || "").trim().toLowerCase() === appliedCode
   );
 
+
+
   if (!matchedItem) {
     // الكتاب اتشال من الكارت → شيل الخصم
     removeDiscount();
@@ -120,6 +122,15 @@ useEffect(() => {
   setDiscount(discountAmount);
   localStorage.setItem(DISCOUNT_KEY, JSON.stringify({ code: appliedCode, discount: discountAmount }));
 }, [cartItems, appliedCode]);
+
+const getCartItemImage = (item) => {
+  return (
+    item?.image ||
+    item?.imgSrc ||
+    item?.coverImageFullUrl ||
+    getBookImage(item)
+  );
+};
   return (
     <>
       <div className="lg:hidden w-full bg-[#F5F5F5] px-4 pt-4 pb-24 flex flex-col gap-4">
@@ -140,7 +151,7 @@ useEffect(() => {
 
       <div className="flex gap-3">
      <img
-  src={item.image || getBookImage(item)}
+  src={getCartItemImage(item)}
   alt={item.title}
   className="w-[90px] h-[120px] object-cover rounded-xl"
   onError={(e) => {
@@ -317,7 +328,7 @@ useEffect(() => {
               return(
                         <div key={item.documentId} className="w-full flex gap-[25px] items-center px-[60px] p-[24px] bg-[#FFFFFF] relative">
             <div className="w-[535px] flex gap-[24px]">
-                <img src={getBookImage(item)} className='h-full w-[173px]' alt={item.title} />
+                <img src={getCartItemImage(item)} className='h-full w-[173px]' alt={item.title} />
 
                 <div className=' w-full flex flex-col gap-[35px]'>
                     <div className='w-[251px] flex flex-col gap-[8px]'>

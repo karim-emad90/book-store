@@ -1,19 +1,27 @@
 import defaultBookImage from "../assets/category/default.jpg";
 
+const API_URL = (import.meta.env.VITE_API_URL || "http://163.245.208.70").replace(/\/$/, "");
+
 export const getBookImage = (book) => {
-  const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
-
   const fileName =
-    book?.image ||
-    book?.coverImageUrl ||
-    book?.attributes?.coverImageUrl ||
-    book?.data?.coverImageUrl;
+    book?.coverImageUrl ??
+    book?.attributes?.coverImageUrl ??
+    book?.data?.coverImageUrl ??
+    book?.data?.attributes?.coverImageUrl ??
+    null;
 
-  if (!fileName || typeof fileName !== "string") {
+  if (!fileName || typeof fileName !== "string" || !fileName.trim()) {
     return defaultBookImage;
   }
 
-  if (fileName.startsWith("http")) return fileName;
+  const cleanFileName = fileName.trim();
 
-  return `${base}/category-images/${fileName}`;
+  if (
+    cleanFileName.startsWith("http://") ||
+    cleanFileName.startsWith("https://")
+  ) {
+    return cleanFileName;
+  }
+
+  return `${API_URL}/category-images/${cleanFileName}`;
 };

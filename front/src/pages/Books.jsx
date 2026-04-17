@@ -11,6 +11,7 @@ import MobileFooter from "../components/MobileFooter";
 import { addToCartOnce, toggleFav, isFav,isInCart } from "../utils/store";
 import { CiHeart } from "react-icons/ci";
 import RatingStars from "../store/RatingStars";
+import { getBookImage } from "../utils/getBookCategoryImage";
 
 
 export default function Books() {
@@ -44,47 +45,53 @@ export default function Books() {
     setToggleText((prev) => (prev === "Load More" ? "Close" : "Load More"));
   };
 
-  const toggleCategory = (categoryId) => {
-    setSelectedCategoryIds((prev) => {
-      const exists = prev.includes(categoryId);
-      const next = exists
-        ? prev.filter((id) => id !== categoryId)
-        : [...prev, categoryId];
-      return next;
-    });
+ const toggleCategory = (categorySlug) => {
+  setSelectedCategoryIds((prev) => {
+    const exists = prev.includes(categorySlug);
+    return exists
+      ? prev.filter((slug) => slug !== categorySlug)
+      : [...prev, categorySlug];
+  });
 
-    setPage(1);
-  };
+  setPage(1);
+};
 
 const fetchCategories = async () => {
   try {
     const res = await api.get(
-      "/api/categories?populate[books][fields][0]=documentId"
+      "/api/categories?fields[0]=name&fields[1]=slug&populate[books][fields][0]=documentId"
     );
-    setCategories(Array.isArray(res?.data?.data) ? res.data.data : []);
+
+    const rows = Array.isArray(res?.data?.data) ? res.data.data : [];
+    setCategories(rows);
   } catch (err) {
-    console.log(err.response?.data || err.message);
+    console.log("fetchCategories error:", err.response?.data || err.message);
     setCategories([]);
   }
 };
 
-  const fetchBooks = async () => {
+const fetchBooks = async () => {
   try {
-  const params = {
-  pagination: { page, pageSize },
-  fields: ["*"],
-  populate: "*", // 👈 مهم
-};
-
-    if (sort) params.sort = sort;
-
     const hasCategory = selectedCategoryIds.length > 0;
     const hasSearch = debouncedSearch.trim() !== "";
 
+    const baseFilters = {
+      coverImageUrl: { $notNull: true },
+    };
+
+    const params = {
+      pagination: { page, pageSize },
+      fields: ["*"],
+      populate: "*",
+      sort: sort ? [sort] : ["id:desc"],
+      filters: baseFilters,
+    };
+
     if (hasCategory && hasSearch) {
       params.filters = {
+        ...baseFilters,
         $and: [
-          { categories: { documentId: { $in: selectedCategoryIds } } },
+          { category: { $in: selectedCategoryIds } },
           {
             $or: [
               { title: { $containsi: debouncedSearch } },
@@ -95,10 +102,12 @@ const fetchCategories = async () => {
       };
     } else if (hasCategory) {
       params.filters = {
-        categories: { documentId: { $in: selectedCategoryIds } },
+        ...baseFilters,
+        category: { $in: selectedCategoryIds },
       };
     } else if (hasSearch) {
       params.filters = {
+        ...baseFilters,
         $or: [
           { title: { $containsi: debouncedSearch } },
           { author: { $containsi: debouncedSearch } },
@@ -108,16 +117,21 @@ const fetchCategories = async () => {
 
     const res = await api.get("/api/books", { params });
 
+    console.log("BOOKS API:", res.data);
+    console.log("FIRST BOOK:", res.data?.data?.[0]);
+
     setBooks(Array.isArray(res?.data?.data) ? res.data.data : []);
 
-    const meta = res.data.meta?.pagination;
+    const meta = res.data?.meta?.pagination;
     setTotal(meta?.total ?? 0);
     setPageCount(meta?.pageCount ?? 1);
   } catch (err) {
-    console.log(err.response?.data || err.message);
+    console.log("fetchBooks error:", err.response?.data || err.message);
     setBooks([]);
   }
 };
+
+
 
   const handleToggleFav = (book) => {
   const id = book?.documentId ?? book?.id;
@@ -181,22 +195,7 @@ const getPageItems = (current, totalPages) => {
   const endItem = Math.min(page * pageSize, total);
   const totalLabel = total > 5000 ? "5000+" : total.toLocaleString();
 
-const getBookImage = (book) => {
-  const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
 
-  const fileName =
-    book?.coverImageUrl ||
-    book?.attributes?.coverImageUrl ||
-    book?.data?.coverImageUrl;
-
-  if (!fileName || typeof fileName !== "string") {
-    return richDadBook;
-  }
-
-  if (fileName.startsWith("http")) return fileName;
-
-  return `${base}/category-images/${fileName}`;
-};
 
   const [cartRefresh, setCartRefresh] = useState(0);
 
@@ -207,20 +206,15 @@ const getBookImage = (book) => {
         {/* Category Chips */}
         <div className="flex gap-2 flex-wrap">
           {(categories || []).slice(0, 7).map((cat) =>  {
-            const active = selectedCategoryIds.includes(cat.documentId);
+            const active = selectedCategoryIds.includes(cat.slug);
 
             return (
-              <button
-                key={cat.documentId}
-                onClick={() => toggleCategory(cat.documentId)}
-                className={`px-4 h-10 rounded-xl text-sm font-medium transition ${
-                  active
-                    ? "bg-[#D9176C] text-white"
-                    : "bg-[#D9D9D9] text-[#222222]"
-                }`}
-              >
-                {cat.name}
-              </button>
+            <button
+  key={cat.documentId}
+  onClick={() => toggleCategory(cat.slug)}
+>
+  {cat.name}
+</button>
             );
           })}
         </div>
@@ -271,11 +265,10 @@ const getBookImage = (book) => {
                       >
                         <div className="flex items-center gap-2">
                           <input
-                            type="checkbox"
-                            checked={selectedCategoryIds.includes(el.documentId)}
-                            onChange={() => toggleCategory(el.documentId)}
-                            className="w-4 h-4 accent-[#D9176C]"
-                          />
+  type="checkbox"
+checked={selectedCategoryIds.includes(el.slug)}
+onChange={() => toggleCategory(el.slug)}
+/>
                           <span className="text-sm text-[#222222]">
                             {el.name}
                           </span>
@@ -317,6 +310,11 @@ const getBookImage = (book) => {
         <div className="flex flex-col gap-4" >
           {books.map((book) => {
             const imgSrc = getBookImage(book);
+            console.log("BOOK IMAGE DEBUG:", {
+  title: book.title,
+  coverImageUrl: book.coverImageUrl,
+  finalImage: getBookImage(book),
+});
 
             return (
               <div
@@ -403,14 +401,19 @@ const getBookImage = (book) => {
       : "bg-white text-[#D9176C] border border-[#D9176C]"
   }`}
   onClick={(e) => {
-    e.stopPropagation();
+  e.stopPropagation();
 
-    addToCartOnce({
-      ...book
-    });
-   console.log("isInCart:", isInCart(book.id));
-    setCartRefresh((prev) => prev + 1);
-  }}
+  const image = getBookImage(book);
+
+  addToCartOnce({
+    ...book,
+    image,
+    imgSrc: image,
+    coverImageFullUrl: image,
+  });
+
+  setCartRefresh((prev) => prev + 1);
+}}
 >
   Cart
 </button>

@@ -38,7 +38,7 @@ export default function BookRow({ book, imgSrc }) {
       <img
         onTouchEnd={() => navigate(`/book/${book.documentId}`)}
         onClick={() => navigate(`/book/${book.documentId}`)}
-        src={getBookImage(book)} alt={book.title}
+        src={imgSrc || getBookImage(book)} alt={book.title}
         className="cursor-pointer w-[173px] h-[253px] object-cover rounded-md bg-white relative z-10"
       />
 
