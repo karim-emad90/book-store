@@ -1,7 +1,5 @@
 import defaultBookImage from "../assets/category/default.jpg";
 
-const API_URL = (import.meta.env.VITE_API_URL || "http://163.245.208.70").replace(/\/$/, "");
-
 export const getBookImage = (book) => {
   const fileName =
     book?.coverImageUrl ??
@@ -23,5 +21,5 @@ export const getBookImage = (book) => {
     return cleanFileName;
   }
 
-  return `${API_URL}/category-images/${cleanFileName}`;
+  return `/category-images/${cleanFileName}`;
 };

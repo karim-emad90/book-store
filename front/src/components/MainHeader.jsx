@@ -20,11 +20,11 @@ export default function MainHeader({ hidden, search, setSearch, mobileSimple = f
   const [aboutHeader,setAboutHeader] = useState(false);
 
   useEffect(() => {
-    if (location.pathname === "/books" || location.pathname === "/cart" || location.pathname === `/book/${id}` || location.pathname === `/checkout`) {
+    if (location.pathname === "/books" || location.pathname === "/cart" || location.pathname ==='/' ||  location.pathname === "/" || location.pathname === `/book/${id}` || location.pathname === `/checkout`) {
       setHideSearch("hidden");
       setHeaderHeight(true);
     }
-    else if(location.pathname === "/about"){
+    else if(location.pathname === "/about"   ){
       setAboutHeader(true);
       setHideSearch("");
       setHeaderHeight(false);

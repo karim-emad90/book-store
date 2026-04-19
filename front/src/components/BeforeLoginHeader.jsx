@@ -3,7 +3,10 @@ import { useState } from 'react';
 import bookIcon from '../assets/LoginPage/book-bookmark 1.png';
 import BigLibrary from '../assets/HomPage/big-library.png';
 import { FaMicrophone } from "react-icons/fa";
-import { CiSearch } from "react-icons/ci";
+import { CiHeart, CiSearch } from "react-icons/ci";
+import MainHeader from './MainHeader';
+import { getCartCount, getFavCount } from '../utils/store';
+import { IoCartOutline } from 'react-icons/io5';
 
 
 
@@ -11,7 +14,7 @@ import { CiSearch } from "react-icons/ci";
 
 
 
-export default function AuthHeader() {
+export default function BeforeLoginHeader({ hidden, mobileSimple = false }) {
     const navigate = useNavigate();
     const navigateLogin = ()=>{
      navigate('/login')
@@ -21,15 +24,90 @@ export default function AuthHeader() {
         navigate('/signup')
     }
   const [openMenu, setOpenMenu] = useState(false);
+  const [cartCount, setCartCount] = useState(getCartCount());
+    const [favCount, setFavCount] = useState(getFavCount());
 
   return (
-  
-         <div className="block lg:h-[338px] relative overflow-hidden">
+    <>
+    
+   {mobileSimple ? (
+      <div className="lg:hidden sticky top-0 z-50 w-full bg-[#43264F] text-white shadow-md">
+        <div className="px-4 pt-4 pb-3 flex items-center justify-between gap-3">
+          
+          <div
+            className="flex items-center gap-2 shrink-0 cursor-pointer"
+            onClick={() => navigate('/')}
+          >
+            <img src={bookIcon} className="w-[24px]" alt="Bookshop" />
+            <span className="text-[18px] font-semibold">Bookshop</span>
+          </div>
+    
+          <div className="flex items-center gap-3 shrink-0">
+            <div
+              className="relative cursor-pointer"
+              onClick={() => navigate('/favorites')}
+            >
+              <CiHeart className="text-[26px] text-white" />
+              <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 flex items-center justify-center rounded-full bg-[#D9176C] text-[10px] text-white leading-none">
+                {favCount}
+              </span>
+            </div>
+    
+            <div
+              className="relative cursor-pointer"
+              onClick={() => navigate('/cart')}
+            >
+              <IoCartOutline className="text-[26px] text-white" />
+              <span className="absolute -top-1 -right-1 min-w-[16px] h-[16px] px-1 flex items-center justify-center rounded-full bg-[#D9176C] text-[10px] text-white leading-none">
+                {cartCount}
+              </span>
+            </div>
+          </div>
+        </div>
+    
+        <div className="px-4 pb-4">
+          <div className="h-px w-full bg-white/10 mb-3"></div>
+    
+          <div className="flex items-center justify-center gap-4 text-[14px] font-medium">
+            <button
+              className="hover:text-[#F8D2E3] transition"
+              onClick={() => navigate('/')}
+            >
+              Home
+            </button>
+    
+            <span className="h-4 w-px bg-white/20"></span>
+    
+            <button
+              className="hover:text-[#F8D2E3] transition"
+              onClick={() => navigate('/books')}
+            >
+              Books
+            </button>
+    
+            <span className="h-4 w-px bg-white/20"></span>
+    
+            <button
+              className="hover:text-[#F8D2E3] transition"
+              onClick={() => navigate('/about')}
+            >
+              About Us
+            </button>
+          </div>
+        </div>
+      </div>
+    ) : (
+      <div className="lg:hidden w-full px-4 pt-[20px]">
+        <GlobalSearch value={search} onChange={setSearch} />
+      </div>
+    )}
+         <div className="hidden lg:block lg:h-[804px] relative overflow-hidden">
+          
 
   
       <div className="relative z-20 w-full h-[92px] bg-white/20 flex items-center justify-between px-4 lg:px-[140px]">
 
-<div className='w-full flex  gap-[48px]'>
+<div className='hidden lg:w-full lg:flex  gap-[48px]'>
           <div className="hidden lg:flex items-center gap-[10px] text-white">
           <img src={bookIcon} alt="bookIcon" className="w-[28px]" />
           <span className="text-[16px] font-light">Bookshop</span>
@@ -132,6 +210,9 @@ export default function AuthHeader() {
       </div>
       </div>
     </div>
+
+ 
+    </>
 
     
   
