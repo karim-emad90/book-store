@@ -1,7 +1,6 @@
 
 import AuthHeader from '../components/AuthHeader'
 import SignupForm from '../components/SignupForm'
-import BeforeLoginHeader from '../components/BeforeLoginHeader';
 import AuthFooter from '../components/AuthFooter';
 import LoginHeader from '../components/loginHeader';
 

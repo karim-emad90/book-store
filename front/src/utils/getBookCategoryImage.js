@@ -21,5 +21,8 @@ export const getBookImage = (book) => {
     return cleanFileName;
   }
 
-  return `/category-images/${cleanFileName}`;
+  const base =
+    (import.meta.env.VITE_API_URL || window.location.origin).replace(/\/$/, "");
+
+  return `${base}/category-images/${cleanFileName.replace(/^\/+/, "")}`;
 };

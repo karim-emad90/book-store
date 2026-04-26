@@ -1,4 +1,4 @@
-import BeforeLoginHeader from '../components/BeforeLoginHeader';
+
 import AuthHeader from '../components/AuthHeader'
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';

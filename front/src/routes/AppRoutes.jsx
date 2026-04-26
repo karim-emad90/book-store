@@ -8,8 +8,6 @@ import AddCode from '../pages/AddCode'
 import ResetPassword from '../pages/ResetPassword'
 import LoginLayout from '../layouts/LoginLayout'
 import BeforeLogin from '../pages/BeforeLogin'
-import AfterLoginLayout from '../layouts/AfterLoginLayout'
-import AfterLogin from '../pages/AfterLogin'
 import ProfileLayout from '../layouts/ProfileLayout'
 import ProfilePage from '../pages/ProfilePage'
 import BooksLyout from '../layouts/BooksLyout'
@@ -23,6 +21,8 @@ import ProductDetails from '../pages/ProductDetails'
 import ProductLayout from '../layouts/ProductLayout'
 import CheckOut from '../pages/CheckOut'
 import CartLayout from '../layouts/CartLayout'
+import WishListLayout from "../layouts/WishListLayout";
+import WishList from "../pages/WishList";
 
 export default function AppRoutes() {
   return (
@@ -40,13 +40,11 @@ export default function AppRoutes() {
            <Route path='/' element={<BeforeLogin/>}></Route>
            <Route path='/beforelogin' element={<BeforeLogin/>}></Route>
            
-           <Route path='/afterlogin' element={<AfterLogin/>}></Route>
 
         </Route>
 
-         <Route element={<AfterLoginLayout/>}>
+         
 
-        </Route>
 
         <Route element={<ProfileLayout/>}>
            <Route path='/profile' element={<ProfilePage/>}></Route>
@@ -68,6 +66,11 @@ export default function AppRoutes() {
         <Route element={<CartLayout/>}>
           <Route path='/cart' element={<MyCart/>}></Route>
           <Route path='/checkout' element={<CheckOut/>}></Route>
+        </Route>
+
+        <Route element={<WishListLayout />}>
+          <Route path="/wishlist" element={<WishList />} />
+          <Route path="/favorites" element={<WishList />} />
         </Route>
 
         <Route element={<ProductLayout/>}>

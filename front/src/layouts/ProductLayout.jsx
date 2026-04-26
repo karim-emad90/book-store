@@ -2,6 +2,7 @@ import { useState } from "react";
 import MainHeader from "../components/MainHeader";
 import { Outlet } from "react-router-dom";
 import MainFooter from "../components/MainFooter";
+import MobileFooter from "../components/MobileFooter";
 
 export default function ProductLayout() {
   
@@ -19,7 +20,8 @@ export default function ProductLayout() {
         <Outlet context={{ search, setSearch }} />
 
         </main>
-        <MainFooter ></MainFooter>
+        <MainFooter />
+        <MobileFooter /> 
     </div>
   )
 }

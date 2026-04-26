@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import MainHeader from "../components/MainHeader";
 import MainFooter from "../components/MainFooter";
 import { useState } from "react";
+import MobileFooter from "../components/MobileFooter";
 
 export default function CheckLayout() {
   const [search,setSearch] = useState('');
@@ -19,6 +20,7 @@ export default function CheckLayout() {
 
         </main>
         <MainFooter></MainFooter>
+        <MobileFooter/>
     </div>
   )
 }

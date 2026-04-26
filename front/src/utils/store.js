@@ -1,178 +1,523 @@
-const CART_KEY = "bookshop_cart";
-const FAV_KEY = "bookshop_fav";
+import {
+  getCurrentFeatureUserKey,
+  isLoggedInForFeatures,
+  showLoginRequiredToast,
+} from "./featureGuard.jsx";
 
-function toAbsoluteUrl(rawUrl) {
-  if (!rawUrl) return null;
+const CART_PREFIX = "bookshop_cart_";
+const FAV_PREFIX = "bookshop_favourites_";
+const FAV_ITEMS_PREFIX = "bookshop_favourite_items_";
 
-  if (typeof rawUrl === "object") {
-    rawUrl = rawUrl.url;
+const LEGACY_FAV_KEYS = [
+  "fav",
+  "favs",
+  "favorites",
+  "favourites",
+  "wishlist",
+  "bookshop_favourites",
+  "bookshop_favorites",
+];
+
+const safeJson = (value, fallback) => {
+  try {
+    const parsed = JSON.parse(value);
+    return parsed ?? fallback;
+  } catch {
+    return fallback;
+  }
+};
+
+export const dispatchStorageUpdate = () => {
+  window.dispatchEvent(new Event("storage-update"));
+};
+
+const normalizeTextId = (value) => {
+  if (value === null || value === undefined) return "";
+  return String(value).trim();
+};
+
+export const getBookKey = (item) => {
+  if (typeof item === "string" || typeof item === "number") {
+    return normalizeTextId(item);
   }
 
-  if (typeof rawUrl !== "string") return null;
+  return normalizeTextId(
+    item?.bookKey ??
+      item?.documentId ??
+      item?.id ??
+      item?.bookId ??
+      item?.productId ??
+      item?.attributes?.documentId ??
+      item?.attributes?.id
+  );
+};
 
-  if (rawUrl.startsWith("http")) return rawUrl;
+const sameBook = (a, b) => {
+  const aKey = getBookKey(a);
+  const bKey = getBookKey(b);
+  return Boolean(aKey && bKey && aKey === bKey);
+};
 
-  const base = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
-  return base ? `${base}${rawUrl}` : rawUrl;
-}
+const getUserKey = () => getCurrentFeatureUserKey();
 
-function getBookId(bookOrId) {
-  if (typeof bookOrId === "object" && bookOrId !== null) {
-    return String(bookOrId.documentId ?? bookOrId.id ?? "");
+const getCartStorageKey = () => `${CART_PREFIX}${getUserKey()}`;
+const getFavStorageKey = () => `${FAV_PREFIX}${getUserKey()}`;
+const getFavItemsStorageKey = () => `${FAV_ITEMS_PREFIX}${getUserKey()}`;
+
+const readArray = (key) => {
+  const value = safeJson(localStorage.getItem(key), []);
+  return Array.isArray(value) ? value : [];
+};
+
+const writeArray = (key, value) => {
+  localStorage.setItem(key, JSON.stringify(value));
+};
+
+const requireLogin = () => {
+  if (isLoggedInForFeatures()) return true;
+  showLoginRequiredToast();
+  return false;
+};
+
+const hasUsefulBookData = (item) => {
+  if (!item || typeof item !== "object") return false;
+
+  return Boolean(
+    item.title ||
+      item.author ||
+      item.description ||
+      item.price ||
+      item.coverImageUrl ||
+      item.image ||
+      item.imgSrc ||
+      item.category ||
+      item.discountCode
+  );
+};
+
+const normalizeBookObject = (bookOrId) => {
+  const key = getBookKey(bookOrId);
+
+  if (!key) return null;
+
+  if (typeof bookOrId === "string" || typeof bookOrId === "number") {
+    return {
+      bookKey: key,
+      id: key,
+      documentId: key,
+    };
   }
 
-  return String(bookOrId ?? "");
-}
-
-function normalizeBook(book) {
-  const rawUrl =
-    book?.image ||
-    book?.coverImageUrl ||
-    book?.coverImage?.url ||
-    book?.coverImage?.formats?.thumbnail?.url ||
-    book?.cover?.url ||
-    book?.cover?.formats?.medium?.url ||
-    book?.cover?.formats?.small?.url ||
-    book?.cover?.formats?.thumbnail?.url ||
-    book?.image?.url ||
-    null;
+  const attrs = bookOrId?.attributes || {};
+  const merged = {
+    ...attrs,
+    ...bookOrId,
+  };
 
   return {
-    id: getBookId(book),
-    title: book?.title ?? "Untitled",
-    author: book?.author ?? "",
-    description: book?.description ?? "",
-    discountCode: book?.discountCode ?? "",
-    isbn13: book?.isbn13 ?? "",
-    price: Number(book?.price ?? 0),
-    image: toAbsoluteUrl(rawUrl),
+    ...merged,
+    bookKey: key,
+    id: merged.id ?? key,
+    documentId: merged.documentId ?? key,
+    title: merged.title ?? attrs.title ?? "Untitled",
+    author: merged.author ?? attrs.author ?? "",
+    description: merged.description ?? attrs.description ?? "",
+    price: Number(merged.price ?? attrs.price ?? 0),
+    discountCode: merged.discountCode ?? attrs.discountCode ?? "",
+    coverImageUrl:
+      merged.coverImageUrl ??
+      attrs.coverImageUrl ??
+      merged.image ??
+      merged.imgSrc ??
+      "",
+    image: merged.image ?? merged.coverImageUrl ?? merged.imgSrc ?? "",
+    imgSrc: merged.imgSrc ?? merged.image ?? merged.coverImageUrl ?? "",
   };
-}
+};
 
-function notifyStorageUpdate() {
-  window.dispatchEvent(new Event("storage-update"));
-}
+const normalizeFavIds = (items) => {
+  if (!Array.isArray(items)) return [];
 
-export function getCart() {
-  try {
-    return JSON.parse(localStorage.getItem(CART_KEY)) || [];
-  } catch {
-    return [];
+  return Array.from(
+    new Set(
+      items
+        .map((item) => getBookKey(item))
+        .filter(Boolean)
+        .map(String)
+    )
+  );
+};
+
+const normalizeFavItems = (items) => {
+  if (!Array.isArray(items)) return [];
+
+  const map = new Map();
+
+  items.forEach((item) => {
+    const normalized = normalizeBookObject(item);
+    if (!normalized) return;
+
+    const key = getBookKey(normalized);
+    const old = map.get(key);
+
+    if (!old) {
+      map.set(key, normalized);
+      return;
+    }
+
+    if (hasUsefulBookData(normalized) && !hasUsefulBookData(old)) {
+      map.set(key, {
+        ...old,
+        ...normalized,
+      });
+    } else {
+      map.set(key, {
+        ...normalized,
+        ...old,
+      });
+    }
+  });
+
+  return Array.from(map.values());
+};
+
+const readFavData = () => {
+  const idsFromMain = normalizeFavIds(readArray(getFavStorageKey()));
+  const itemsFromMain = normalizeFavItems(readArray(getFavStorageKey()));
+  const itemsFromItemsKey = normalizeFavItems(readArray(getFavItemsStorageKey()));
+
+  let ids = [...idsFromMain];
+  let items = [...itemsFromItemsKey, ...itemsFromMain];
+
+  LEGACY_FAV_KEYS.forEach((legacyKey) => {
+    const legacyArray = readArray(legacyKey);
+    ids = [...ids, ...normalizeFavIds(legacyArray)];
+    items = [...items, ...normalizeFavItems(legacyArray)];
+  });
+
+  ids = Array.from(new Set(ids.filter(Boolean).map(String)));
+  items = normalizeFavItems(items);
+
+  const itemMap = new Map(items.map((item) => [getBookKey(item), item]));
+
+  ids.forEach((id) => {
+    if (!itemMap.has(id)) {
+      itemMap.set(id, {
+        bookKey: id,
+        id,
+        documentId: id,
+      });
+    }
+  });
+
+  items = Array.from(itemMap.values());
+
+  writeArray(getFavStorageKey(), ids);
+  writeArray(getFavItemsStorageKey(), items);
+
+  return { ids, items };
+};
+
+const saveFavData = (ids, items) => {
+  const cleanIds = Array.from(new Set(normalizeFavIds(ids)));
+  let cleanItems = normalizeFavItems(items);
+
+  const itemMap = new Map(cleanItems.map((item) => [getBookKey(item), item]));
+
+  cleanIds.forEach((id) => {
+    if (!itemMap.has(id)) {
+      itemMap.set(id, {
+        bookKey: id,
+        id,
+        documentId: id,
+      });
+    }
+  });
+
+  cleanItems = Array.from(itemMap.values()).filter((item) =>
+    cleanIds.includes(getBookKey(item))
+  );
+
+  writeArray(getFavStorageKey(), cleanIds);
+  writeArray(getFavItemsStorageKey(), cleanItems);
+
+  dispatchStorageUpdate();
+
+  return cleanIds;
+};
+
+/* =========================
+   Cart
+========================= */
+
+const normalizeCartItem = (book, qty = 1) => {
+  const normalized = normalizeBookObject(book);
+  const key = getBookKey(normalized);
+
+  return {
+    ...normalized,
+    bookKey: key,
+    qty: Math.max(1, Number(book?.qty ?? qty ?? 1)),
+    price: Number(book?.price ?? book?.attributes?.price ?? 0),
+  };
+};
+
+const dedupeCart = (items) => {
+  const map = new Map();
+
+  items.forEach((item) => {
+    const key = getBookKey(item);
+    if (!key) return;
+
+    const normalized = normalizeCartItem(item);
+
+    if (map.has(key)) {
+      const old = map.get(key);
+      map.set(key, {
+        ...old,
+        ...normalized,
+        qty: Number(old.qty || 1) + Number(normalized.qty || 1),
+      });
+    } else {
+      map.set(key, normalized);
+    }
+  });
+
+  return Array.from(map.values());
+};
+
+export const getCart = () => {
+  if (!isLoggedInForFeatures()) return [];
+
+  const current = readArray(getCartStorageKey());
+
+  if (current.length > 0) {
+    const cleaned = dedupeCart(current);
+    writeArray(getCartStorageKey(), cleaned);
+    return cleaned;
   }
-}
 
-export function saveCart(cart) {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart));
-  notifyStorageUpdate();
-}
+  return [];
+};
 
-export function addToCart(book) {
+export const saveCart = (items) => {
+  if (!isLoggedInForFeatures()) return [];
+
+  const cleaned = dedupeCart(Array.isArray(items) ? items : []);
+  writeArray(getCartStorageKey(), cleaned);
+  dispatchStorageUpdate();
+  return cleaned;
+};
+
+export const addToCart = (book, qty = 1) => {
+  if (!requireLogin()) return getCart();
+
+  const key = getBookKey(book);
+  if (!key) return getCart();
+
   const cart = getCart();
-  const normalizedBook = normalizeBook(book);
-  const id = normalizedBook.id;
+  const index = cart.findIndex((item) => sameBook(item, key));
 
-  const idx = cart.findIndex((item) => String(item.id) === String(id));
-
-  if (idx === -1) {
-    cart.push({
-      ...normalizedBook,
-      qty: 1,
-    });
+  if (index >= 0) {
+    cart[index] = {
+      ...cart[index],
+      qty: Math.max(1, Number(cart[index].qty || 1) + Number(qty || 1)),
+    };
   } else {
-    cart[idx] = { ...cart[idx], qty: cart[idx].qty + 1 };
+    cart.push(normalizeCartItem(book, qty));
   }
 
-  saveCart(cart);
-}
+  return saveCart(cart);
+};
 
-export function addToCartOnce(book) {
+export const addToCartOnce = (book) => {
+  if (!requireLogin()) return getCart();
+
+  const key = getBookKey(book);
+  if (!key) return getCart();
+
   const cart = getCart();
-  const normalizedBook = normalizeBook(book);
-  const id = normalizedBook.id;
 
-  const exists = cart.find((item) => String(item.id) === String(id));
-
-  if (!exists) {
-    cart.push({
-      ...normalizedBook,
-      qty: 1,
-    });
-
-    saveCart(cart);
+  if (cart.some((item) => sameBook(item, key))) {
+    return cart;
   }
-}
 
-export function removeFromCart(id) {
-  const normalizedId = String(id);
-  const cart = getCart().filter((item) => String(item.id) !== normalizedId);
-  saveCart(cart);
-}
+  return saveCart([...cart, normalizeCartItem(book, 1)]);
+};
 
-export function changeCartQty(id, qty) {
-  const normalizedId = String(id);
+export const removeFromCart = (bookOrId) => {
+  const key = getBookKey(bookOrId);
+  if (!key) return getCart();
 
-  const cart = getCart().map((item) =>
-    String(item.id) === normalizedId
-      ? { ...item, qty: Math.max(1, qty) }
+  const updated = getCart().filter((item) => !sameBook(item, key));
+  return saveCart(updated);
+};
+
+export const changeCartQty = (bookOrId, qty) => {
+  const key = getBookKey(bookOrId);
+  const nextQty = Number(qty);
+
+  if (!key) return getCart();
+
+  if (nextQty <= 0) {
+    return removeFromCart(key);
+  }
+
+  const updated = getCart().map((item) =>
+    sameBook(item, key)
+      ? {
+          ...item,
+          qty: nextQty,
+        }
       : item
   );
 
-  saveCart(cart);
-}
+  return saveCart(updated);
+};
 
-export function clearCart() {
-  saveCart([]);
-}
+export const isInCart = (bookOrId) => {
+  const key = getBookKey(bookOrId);
+  if (!key) return false;
 
-export function getCartCount() {
-  const cart = getCart();
-  return cart.length;
-}
+  return getCart().some((item) => sameBook(item, key));
+};
 
-export function getFav() {
-  try {
-    return JSON.parse(localStorage.getItem(FAV_KEY)) || [];
-  } catch {
-    return [];
-  }
-}
+export const getCartCount = () => {
+  return getCart().reduce((total, item) => {
+    return total + Number(item.qty || 1);
+  }, 0);
+};
 
-export function saveFav(fav) {
-  localStorage.setItem(FAV_KEY, JSON.stringify(fav));
-  notifyStorageUpdate();
-}
+export const clearCart = () => {
+  writeArray(getCartStorageKey(), []);
+  dispatchStorageUpdate();
+};
 
-export function getFavCount() {
-  return getFav().length;
-}
+/* =========================
+   Favourites / Wishlist
+========================= */
 
-export function toggleFav(bookOrId) {
-  const id = getBookId(bookOrId);
-  const fav = getFav();
+export const getFav = () => {
+  if (!isLoggedInForFeatures()) return [];
+  return readFavData().ids;
+};
 
-  const exists = fav.some((item) => String(item) === id);
+export const getFavItems = () => {
+  if (!isLoggedInForFeatures()) return [];
+  return readFavData().items;
+};
 
-  let updated;
+export const saveFav = (items) => {
+  if (!isLoggedInForFeatures()) return [];
+
+  const ids = normalizeFavIds(items);
+  const favItems = normalizeFavItems(items);
+
+  return saveFavData(ids, favItems);
+};
+
+export const addToFavourites = (bookOrId) => {
+  if (!requireLogin()) return getFav();
+
+  const key = getBookKey(bookOrId);
+  if (!key) return getFav();
+
+  const { ids, items } = readFavData();
+
+  const nextIds = ids.includes(key) ? ids : [...ids, key];
+
+  const normalized = normalizeBookObject(bookOrId);
+  const nextItems = [
+    ...items.filter((item) => getBookKey(item) !== key),
+    normalized,
+  ];
+
+  return saveFavData(nextIds, nextItems);
+};
+
+export const removeFromFav = (bookOrId) => {
+  const key = getBookKey(bookOrId);
+  if (!key) return getFav();
+
+  const { ids, items } = readFavData();
+
+  const nextIds = ids.filter((item) => String(item) !== String(key));
+  const nextItems = items.filter((item) => getBookKey(item) !== key);
+
+  LEGACY_FAV_KEYS.forEach((legacyKey) => {
+    const legacy = readArray(legacyKey);
+    if (!legacy.length) return;
+
+    writeArray(
+      legacyKey,
+      legacy.filter((item) => getBookKey(item) !== key)
+    );
+  });
+
+  return saveFavData(nextIds, nextItems);
+};
+
+export const toggleFav = (bookOrId) => {
+  if (!requireLogin()) return getFav();
+
+  const key = getBookKey(bookOrId);
+  if (!key) return getFav();
+
+  const { ids, items } = readFavData();
+  const exists = ids.some((item) => String(item) === String(key));
 
   if (exists) {
-    updated = fav.filter((item) => String(item) !== id);
-  } else {
-    updated = [...fav, id];
+    const nextIds = ids.filter((item) => String(item) !== String(key));
+    const nextItems = items.filter((item) => getBookKey(item) !== key);
+
+    return saveFavData(nextIds, nextItems);
   }
 
-  saveFav(updated);
-  return updated;
-}
+  const normalized = normalizeBookObject(bookOrId);
 
-export function isFav(bookOrId) {
-  const id = getBookId(bookOrId);
-  const fav = getFav();
-  return fav.some((item) => String(item) === id);
-}
-
-export const isInCart = (id) => {
-  const normalizedId = String(id);
-  const cart = JSON.parse(localStorage.getItem(CART_KEY)) || [];
-
-  return cart.some((item) => String(item.id) === normalizedId);
+  return saveFavData([...ids, key], [
+    ...items.filter((item) => getBookKey(item) !== key),
+    normalized,
+  ]);
 };
+
+export const isFav = (bookOrId) => {
+  const key = getBookKey(bookOrId);
+  if (!key) return false;
+
+  return getFav().some((item) => String(item) === String(key));
+};
+
+export const getFavCount = () => getFav().length;
+
+export const clearLegacyAuth = () => {
+  [
+    "jwt",
+    "token",
+    "authToken",
+    "accessToken",
+    "user",
+    "authUser",
+    "bookshop_user",
+  ].forEach((key) => {
+    localStorage.removeItem(key);
+  });
+
+  dispatchStorageUpdate();
+};
+
+/* Old names */
+export const getFavourites = getFav;
+export const getFavorites = getFav;
+export const getWishlist = getFav;
+
+export const addToFavorites = addToFavourites;
+
+export const removeFromFavourites = removeFromFav;
+export const removeFromFavorites = removeFromFav;
+export const removeFromWishlist = removeFromFav;
+
+export const getCartItems = getCart;
+export const getFavouriteItems = getFavItems;
+export const getFavoriteItems = getFavItems;
+export const getWishlistItems = getFavItems;

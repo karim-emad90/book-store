@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import MainFooter from "../components/MainFooter";
 import MainHeader from "../components/MainHeader";
 import { useState } from "react";
+import MobileFooter from "../components/MobileFooter";
 
 export default function CartLayout() {
   const [search,setSearch] = useState('');
@@ -16,7 +17,8 @@ export default function CartLayout() {
         <Outlet context={{ search, setSearch }} />
 
         </main>
-        <MainFooter></MainFooter>
+        <MainFooter />
+        <MobileFooter /> 
     </div>
   )
 }

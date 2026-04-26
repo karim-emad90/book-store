@@ -8,6 +8,8 @@ import badgeCheck from "../assets/ProductDetails/badge-check (1) 1.png";
 import shippingVan from "../assets/ProductDetails/shipping-fast 1 (1).png";
 import cart from "../assets/ProductDetails/Vector (2).png";
 
+import toast from "react-hot-toast";
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import api from "../api";
@@ -15,6 +17,10 @@ import { addToCart, toggleFav, isFav } from "../utils/store";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import MobileFooter from "../components/MobileFooter";
 import { getBookImage } from "../utils/getBookCategoryImage";
+import {
+  isLoggedInForFeatures,
+  showLoginRequiredToast,
+} from "../utils/featureGuard.jsx";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -165,11 +171,16 @@ export default function ProductDetails() {
               <div className="w-[244px] h-[50px] lg:h-full flex gap-[16px] max-md:w-full">
                 <button
                   className="w-[180px] h-full bg-[#D9176C] text-white rounded-xl flex justify-center items-center gap-[10px] max-md:flex-1"
-                  onClick={() => {
-                    for (let i = 0; i < qty; i++) {
-                      addToCart(fixedBook);
-                    }
-                  }}
+                 onClick={() => {
+  if (!isLoggedInForFeatures()) {
+    showLoginRequiredToast();
+    return;
+  }
+
+  for (let i = 0; i < qty; i += 1) {
+    addToCart(fixedBook);
+  }
+}}
                 >
                   Add To Cart
                   <img src={cart} alt="" />
@@ -177,10 +188,23 @@ export default function ProductDetails() {
 
                 <button
                   className="w-[48px] h-full border border-[#D9176C] rounded-xl flex justify-center items-center"
-                  onClick={() => {
-                    toggleFav(id);
-                    setFavState((prev) => !prev);
-                  }}
+                 onClick={() => {
+  if (!isLoggedInForFeatures()) {
+    showLoginRequiredToast();
+    return;
+  }
+
+  const wasFav = isFav(fixedBook);
+
+  toggleFav({
+    ...fixedBook,
+    image: getBookImage(fixedBook),
+    coverImageUrl: getBookImage(fixedBook),
+    imgSrc: getBookImage(fixedBook),
+  });
+
+  setFavState(!wasFav);
+}}
                 >
                   {favState ? (
                     <FaHeart className="text-[#D9176C]" />

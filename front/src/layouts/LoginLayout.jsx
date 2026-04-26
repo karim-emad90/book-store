@@ -1,9 +1,9 @@
 import { Outlet } from "react-router-dom";
-import BeforeLoginHeader from "../components/BeforeLoginHeader";
 import MainFooter from "../components/MainFooter";
 import AuthFooter from "../components/AuthFooter";
 import MainHeader from "../components/MainHeader";
 import LoginHeader from "../components/loginHeader";
+import MobileFooter from "../components/MobileFooter";
 
 export default function LoginLayout() {
   return (
@@ -14,7 +14,8 @@ export default function LoginLayout() {
         <Outlet/>
 
         </main>
-        <AuthFooter/>
+        <MainFooter />
+        <MobileFooter /> 
     </div>
   )
 }

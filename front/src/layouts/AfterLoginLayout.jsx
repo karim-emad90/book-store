@@ -1,5 +1,4 @@
 import { Outlet } from "react-router-dom";
-import AfterLoginHeader from "../components/AfterLoginHeader";
 import MainFooter from "../components/MainFooter";
 import MainHeader from "../components/MainHeader";
 
