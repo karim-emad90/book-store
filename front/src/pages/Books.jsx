@@ -294,7 +294,7 @@ const handleToggleFav = (book) => {
         </div>
       )}
 
-      <div className="lg:hidden w-full bg-[#F5F5F5] px-4 pt-4 pb-8 flex flex-col gap-4">
+      <div className="lg:hidden w-full max-w-full overflow-x-hidden bg-[#F5F5F5] px-3 sm:px-4 pt-4 pb-8 flex flex-col gap-4">
         <div className="flex gap-2 flex-wrap">
           {(categories || []).slice(0, 7).map((cat) => {
             const active = selectedCategoryIds.includes(cat.documentId);
@@ -303,7 +303,7 @@ const handleToggleFav = (book) => {
               <button
                 key={cat.documentId}
                 onClick={() => toggleCategory(cat.documentId)}
-                className={`px-4 py-2 rounded-xl text-[14px] font-medium ${
+                className={`px-3 sm:px-4 py-2 rounded-xl text-[13px] sm:text-[14px] font-medium ${
                   active
                     ? "bg-[#D9176C] text-white"
                     : "bg-[#00000014] text-[#222222]"
@@ -414,30 +414,30 @@ const handleToggleFav = (book) => {
               return (
                 <div
                   key={book.documentId ?? book.id}
-                  className="bg-white rounded-2xl p-3 border border-[#22222210] shadow-sm"
+                  className="w-full max-w-full bg-white rounded-2xl p-2.5 sm:p-3 border border-[#22222210] shadow-sm overflow-hidden"
                 >
                   <div
-                    className="flex gap-3"
+                    className="flex gap-2.5 sm:gap-3 min-w-0"
                     onClick={() => navigate(`/book/${book.documentId ?? book.id}`)}
                   >
                     <img
                       src={getBookImage(book)}
                       alt={book.title || "Book image"}
-                      className="w-[105px] h-[320px] rounded-xl object-cover bg-[#D9F5FF] shrink-0"
+                      className="w-[86px] h-[130px] min-[390px]:w-[105px] min-[390px]:h-[158px] sm:w-[122px] sm:h-[183px] rounded-xl object-cover bg-[#D9F5FF] shrink-0"
                     />
 
                     <div className="flex-1 min-w-0 flex flex-col">
-                      <h3 className="text-[18px] font-semibold text-[#222222] truncate">
+                      <h3 className="text-[16px] sm:text-[18px] font-semibold text-[#222222] truncate">
                         {book.title}
                       </h3>
 
-                      <p className="mt-2 text-[14px] leading-6 text-[#222222CC] line-clamp-3">
+                      <p className="mt-1.5 sm:mt-2 text-[13px] sm:text-[14px] leading-5 sm:leading-6 text-[#222222CC] line-clamp-2 sm:line-clamp-3">
                         {book.description ||
                           "Short description for the book appears here."}
                       </p>
 
-                      <div className="mt-3 flex items-center gap-[8px] min-w-0">
-                        <div className="shrink-0 origin-left scale-[0.82]">
+                      <div className="mt-2 sm:mt-3 flex items-center gap-[6px] sm:gap-[8px] min-w-0 overflow-hidden">
+                        <div className="shrink-0 origin-left scale-[0.72] sm:scale-[0.82]">
                           <RatingStars rating={book.rating || 0} />
                         </div>
                         <span className="text-[12px] text-[#22222280] whitespace-nowrap">
@@ -445,32 +445,32 @@ const handleToggleFav = (book) => {
                         </span>
                       </div>
 
-                      <div className="mt-3 flex items-start justify-between gap-2">
-                        <div className="min-w-0">
-                          <p className="text-[14px] text-[#22222280]">
+                      <div className="mt-2 sm:mt-3 flex flex-col min-[390px]:flex-row min-[390px]:items-start min-[390px]:justify-between gap-2 min-w-0">
+                        <div className="min-w-0 flex-1">
+                          <p className="text-[13px] sm:text-[14px] text-[#22222280]">
                             Rate{" "}
                             <span className="text-[#222222]">
                               {book.rating || 3.9}
                             </span>
                           </p>
 
-                          <div className="mt-2 text-[13px] text-[#22222280]">
+                          <div className="mt-1.5 sm:mt-2 text-[12px] sm:text-[13px] text-[#22222280]">
                             Author
                           </div>
-                          <div className="text-[14px] w-[60px] overflow-hidden text-[#222222] font-medium">
+                          <div className="text-[13px] sm:text-[14px] max-w-[130px] truncate overflow-hidden text-[#222222] font-medium">
                             {book.author || "Unknown"}
                           </div>
 
-                          <div className="mt-1 text-[13px] text-[#22222280]">
+                          <div className="mt-1 text-[12px] sm:text-[13px] text-[#22222280]">
                             Year
                           </div>
-                          <div className="text-[14px] text-[#222222] font-medium">
+                          <div className="text-[13px] sm:text-[14px] text-[#222222] font-medium">
                             {book.year || "2000"}
                           </div>
                         </div>
 
-                        <div className="flex flex-col items-end gap-3 w-[124px] shrink-0">
-                          <p className="text-[20px] font-semibold text-[#222222] w-full text-right">
+                        <div className="flex flex-col items-end gap-2 sm:gap-3 w-full min-[390px]:w-[124px] shrink-0">
+                          <p className="text-[18px] sm:text-[20px] font-semibold text-[#222222] w-full text-right">
                             ${book.price || 14.99}
                           </p>
 
@@ -480,7 +480,7 @@ const handleToggleFav = (book) => {
                           >
                             <button
                               onClick={() => handleToggleFav(book)}
-                              className={`w-10 h-10 rounded-full flex items-center justify-center border shrink-0 transition ${
+                              className={`w-9 h-9 sm:w-10 sm:h-10 rounded-full flex items-center justify-center border shrink-0 transition ${
                                 favActive
                                   ? "bg-[#D9176C] border-[#D9176C]"
                                   : "bg-white border-[#D9176C]"
@@ -494,7 +494,7 @@ const handleToggleFav = (book) => {
                             </button>
 
                             <button
-                              className={`flex-1 h-10 min-w-0 px-2 rounded-xl text-[12px] font-medium whitespace-nowrap ${
+                              className={`flex-1 h-9 sm:h-10 min-w-0 px-2 rounded-xl text-[11px] sm:text-[12px] font-medium whitespace-nowrap ${
                                 inCart
                                   ? "bg-[#D9176C] text-white"
                                   : "bg-white text-[#D9176C] border border-[#D9176C]"
@@ -509,8 +509,8 @@ const handleToggleFav = (book) => {
                     </div>
                   </div>
 
-                  <div className="mt-3 flex justify-end">
-                    <div className="px-4 h-10 rounded-2xl border border-[#E3C65C] text-[#D7B84A] text-sm flex items-center">
+                  <div className="mt-3 flex justify-end min-w-0">
+                    <div className="max-w-full px-3 sm:px-4 h-10 rounded-2xl border border-[#E3C65C] text-[#D7B84A] text-[12px] sm:text-sm flex items-center truncate">
                       25% Discount code: {book.discountCode || "NE229"}
                     </div>
                   </div>
@@ -520,8 +520,8 @@ const handleToggleFav = (book) => {
           )}
         </div>
 
-        <div dir="ltr" className="flex items-center gap-2">
-          <div className="flex items-center gap-2">
+        <div dir="ltr" className="flex flex-col sm:flex-row sm:items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <button
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page === 1}

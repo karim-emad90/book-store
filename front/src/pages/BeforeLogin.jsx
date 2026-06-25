@@ -337,7 +337,7 @@ export default function BeforeLogin() {
   );
 
   return (
-    <div className="h-full w-full lg:max-w-full mx-auto gap-[40px] lg:gap-0 bg-[#F5F5F5] flex flex-col">
+    <div className="h-full w-full max-w-full overflow-x-hidden lg:max-w-full mx-auto gap-[40px] lg:gap-0 bg-[#F5F5F5] flex flex-col">
       {toast.show && (
         <div className="fixed left-1/2 top-6 z-[9999] -translate-x-1/2 rounded-xl bg-[#222222] px-4 py-3 text-sm font-medium text-white shadow-[0_10px_30px_rgba(0,0,0,0.18)]">
           {toast.message}
@@ -355,9 +355,9 @@ export default function BeforeLogin() {
       </div>
 
       {/* Best Seller */}
-      <div className='w-full h-dvh flex flex-col justify-center items-center gap-[24px] lg:gap-[48px] bg-[#F5F5F5] lg:bg-[#3B2F4A]'>
-        <div className='w-full lg:w-[516px] h-[87px] text-[#FFFFFF] flex items-center flex-col gap-[8px]'>
-          <h3 className='self-center text-[#FFFFFF] text-[26px] font-bold'>
+      <div className='w-full min-h-[520px] h-auto py-[40px] px-[16px] lg:px-0 lg:py-0 lg:h-dvh flex flex-col justify-center items-center gap-[24px] lg:gap-[48px] bg-[#F5F5F5] lg:bg-[#3B2F4A]'>
+        <div className='w-full max-w-[516px] lg:w-[516px] h-auto lg:h-[87px] text-[#FFFFFF] flex items-center flex-col gap-[8px]'>
+          <h3 className='self-center text-[#3B2F4A] lg:text-[#FFFFFF] text-[26px] font-bold'>
             Best Seller
           </h3>
           <p className='hidden lg:block w-full text-center text-[#ffffff80] text-[16px] font-normal'>
@@ -365,8 +365,8 @@ export default function BeforeLogin() {
           </p>
         </div>
 
-        <div className="w-full">
-          <div className="w-full h-[300px] overflow-hidden">
+        <div className="w-full max-w-full">
+          <div className="w-full max-w-full h-[285px] lg:h-[300px] overflow-hidden">
             <div
               ref={trackRef}
               className="flex flex-nowrap h-full ease-in-out transition-transform duration-500"
@@ -379,14 +379,14 @@ export default function BeforeLogin() {
                 <div
                   key={`${book?.documentId || book?.id || 'book'}-${i}`}
                   ref={i === 0 ? cardRef : null}
-                  className="w-[140px] lg:w-[173px] h-full shrink-0 rounded-2xl overflow-hidden bg-white shadow cursor-pointer"
+                  className="w-[145px] sm:w-[155px] lg:w-[173px] h-full shrink-0 rounded-2xl overflow-hidden bg-white shadow cursor-pointer"
                   onClick={() => !loading && navigate(getBookPath(book))}
                 >
                   <BookImage
                     book={book}
                     fallback={designBook}
                     alt={book?.title}
-                    className="w-full h-[220px] object-cover"
+                    className="w-full h-[210px] sm:h-[220px] object-cover"
                   />
                   <div className="p-2 bg-white">
                     <h4 className="text-[12px] lg:text-[14px] font-bold text-[#222] line-clamp-1">
@@ -432,7 +432,7 @@ export default function BeforeLogin() {
       </div>
 
       {/* Recommended */}
-      <div className='w-full lg:px-[60px] lg:py-[120px] h-full justify-center items-center flex flex-col gap-[32px] lg:gap-[40px]'>
+      <div className='w-full px-0 py-[24px] lg:px-[60px] lg:py-[120px] h-full justify-center items-center flex flex-col gap-[32px] lg:gap-[40px]'>
         <div className='order-1 flex items-center justify-between gap-[16px] w-full px-[16px] lg:px-0'>
           <h2 className='text-[22px] lg:text-[26px] text-[#222222] font-bold leading-[1.2] whitespace-nowrap'>
             Recommended For You
@@ -447,32 +447,32 @@ export default function BeforeLogin() {
           </Link>
         </div>
 
-        <div className='order-2 overflow-x-auto px-[16px] w-full h-auto flex flex-col lg:flex-row gap-[16px] lg:gap-[24px]'>
+        <div className='order-2 overflow-x-hidden px-[16px] w-full max-w-full h-auto flex flex-col lg:flex-row gap-[16px] lg:gap-[24px]'>
           {(loading ? Array(2).fill({}) : recommendedBooks).map((book, idx) => {
             const favourite = !loading && isFav(book);
 
             return (
               <div
                 key={book?.documentId || book?.id || idx}
-                className='lg:w-full w-full min-h-[220px] p-[16px] lg:p-[40px] flex lg:gap-[39px] gap-[16px] justify-center items-center bg-white rounded-xl shadow'
+                className='lg:w-full w-full max-w-full min-h-[220px] p-[16px] lg:p-[40px] flex lg:gap-[39px] gap-[16px] justify-start lg:justify-center items-center bg-white rounded-xl shadow'
               >
                 <BookImage
                   book={book}
                   fallback={richDadBook}
                   alt={book?.title}
-                  className='lg:w-[176px] w-[93px] h-[160px] lg:h-[240px] object-cover rounded-lg cursor-pointer shrink-0'
+                  className='lg:w-[176px] w-[88px] sm:w-[93px] h-[150px] sm:h-[160px] lg:h-[240px] object-cover rounded-lg cursor-pointer shrink-0'
                 />
 
-                <div className='lg:w-[353px] w-[202px] h-full flex flex-col gap-[16px] lg:gap-[24px]'>
+                <div className='lg:w-[353px] flex-1 min-w-0 h-full flex flex-col gap-[16px] lg:gap-[24px]'>
                   <div className='w-full flex flex-col lg:gap-[8px]'>
                     <div className='w-full flex flex-col gap-[4px]'>
                       <h3
-                        className='text-[14px] lg:text-[18px] text-[#222222] font-bold cursor-pointer leading-[1.4]'
+                        className='text-[14px] lg:text-[18px] text-[#222222] font-bold cursor-pointer leading-[1.4] line-clamp-2'
                         onClick={() => !loading && navigate(getBookPath(book))}
                       >
                         {loading ? "Loading..." : book.title}
                       </h3>
-                      <h4 className='text-[10px] lg:text-[14px] font-semibold text-[#222222]'>
+                      <h4 className='text-[10px] lg:text-[14px] font-semibold text-[#222222] line-clamp-1'>
                         <span className='font-normal text-[#22222280]'>Author: </span>
                         {loading ? "" : book.author}
                       </h4>
@@ -486,8 +486,8 @@ export default function BeforeLogin() {
                   <div className='w-full flex flex-wrap lg:flex-nowrap lg:flex-col lg:gap-[16px]'>
                     <div className='w-full flex flex-col lg:flex-row lg:items-start justify-between gap-[10px]'>
                       <div className='w-full flex flex-col gap-[8px]'>
-                        <div className='w-full flex items-center gap-[12px] lg:gap-[16px] min-w-0'>
-                          <div className='shrink-0 origin-left scale-[0.84] lg:scale-[0.9]'>
+                        <div className='w-full lg:flex-row items-center flex-wrap lg:gap-[16px] min-w-0'>
+                          <div className='shrink-0 origin-left scale-[0.78] sm:scale-[0.84] lg:scale-[0.9]'>
                             <RatingStars rating={loading ? 0 : (book.rating || 0)} />
                           </div>
                           <p className='text-[10px] lg:text-[12px] font-semibold text-[#222222] whitespace-nowrap'>
@@ -500,8 +500,8 @@ export default function BeforeLogin() {
                         </p>
                       </div>
 
-                      <div className='w-full flex relative'>
-                        <p className='lg:text-[26px] text-[18px] font-semibold text-[#222222]'>
+                      <div className='w-full flex relative pr-[84px] lg:pr-0'>
+                        <p className='lg:text-[26px] text-[18px] font-semibold text-[#222222] truncate'>
                           ${loading ? 0 : (book.price || 0)}
                         </p>
 
